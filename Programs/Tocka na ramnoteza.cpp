@@ -1,25 +1,32 @@
 #include <bits/stdc++.h>
 using namespace std;
- 
-int main() {
-    int n; cin >> n;
-    vector<int> v(n);
-    int sr = 0;
-    for (int i = 0; i < n; ++i) {
-        int a; cin >> a;
-        v[i] = a;
-        sr += a;
+
+int main()
+{
+//    freopen("in.txt", "r", stdin);
+//    freopen("out.txt", "w", stdout);
+
+    int n;
+    cin >> n;
+
+    int remaining = 0;
+    int a[n];
+    for (int i = 0; i < n; ++i)
+    {
+        cin >> a[i];
+        remaining += a[i];
     }
-    int _ri = -1;
-    int sl = 0;
-    for (int i = 0; i < n; ++i) {
-        int a = v[i];
-        sr -= a;
-        if (sl == sr) {
-            _ri = i+1;
+
+    int progress = 0, result = -1;
+    for (int i = 0; i < n; ++i)
+    {
+        remaining -= a[i];
+        if (progress == remaining)
+        {
+            result = i+1;
             break;
         }
-        sl += a;
+        progress += a[i];
     }
-    cout << _ri << endl;
+    cout << result;
 }
