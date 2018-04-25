@@ -1,0 +1,14 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int main()
+{
+//    freopen("in.txt", "r", stdin);
+//    freopen("out.txt", "w", stdout);
+
+    int k, n, w;
+    cin >> k >> n >> w;
+    int cost = k*w*(w+1)/2;
+    cout << max(0, cost - n);
+}
