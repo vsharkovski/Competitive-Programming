@@ -26,22 +26,22 @@ int main() {
   };
 
   cout << "string a[] = {";
-  for (ll i = 01; i <= 99; ++i) {
+  for (ll i = 0; i <= 99; ++i) {
     f(2, i);
   }
   cout << "};" << endl;
   cout << "string b[] = {";
-  for (ll i = 0001; i <= 9999; ++i) {
+  for (ll i = 0; i <= 9999; ++i) {
     f(4, i);
   }
   cout << "};" << endl;
   cout << "string c[] = {";
-  for (ll i = 000001; i <= 999999; ++i) {
+  for (ll i = 0; i <= 999999; ++i) {
     f(6, i);
   }
   cout << "};" << endl;
   cout << "string d[] = {";
-  for (ll i = 00000001; i <= 99999999; ++i) {
+  for (ll i = 0; i <= 99999999; ++i) {
     f(8, i);
   }
   cout << "};" << endl;
