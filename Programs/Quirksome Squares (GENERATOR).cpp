@@ -21,26 +21,26 @@ int main() {
     ll a = stoll(s.substr(0, len/2));
     ll b = stoll(s.substr(len/2, len));
     if ((a+b)*(a+b) == n) {
-      cout << s << ", ";
+      cout << "\"" << s << "\", ";
     }
   };
 
-  cout << "ll a[] = {";
+  cout << "string a[] = {";
   for (ll i = 01; i <= 99; ++i) {
     f(2, i);
   }
   cout << "};" << endl;
-  cout << "ll b[] = {";
+  cout << "string b[] = {";
   for (ll i = 0001; i <= 9999; ++i) {
     f(4, i);
   }
   cout << "};" << endl;
-  cout << "ll c[] = {";
+  cout << "string c[] = {";
   for (ll i = 000001; i <= 999999; ++i) {
     f(6, i);
   }
   cout << "};" << endl;
-  cout << "ll d[] = {";
+  cout << "string d[] = {";
   for (ll i = 00000001; i <= 99999999; ++i) {
     f(8, i);
   }
