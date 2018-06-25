@@ -50,7 +50,8 @@ int main1() {
 }
 
 
-
+// better solution
+// https://github.com/ackoroa/UVa-Solutions/blob/master/UVa%20624%20-%20CD/src/UVa%20624%20-%20CD.cpp
 
 
 
