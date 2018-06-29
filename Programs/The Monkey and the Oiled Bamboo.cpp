@@ -4,7 +4,6 @@
 typedef long long ll;
 using namespace std;
 
-// Couldn't do it with binary searchio
 
 int n;
 vector<int> v;
@@ -36,17 +35,28 @@ void solve() {
     cin >> n;
     v.resize(n);
 
-    int high = -1;
-    int prev = 0;
+    int low = 1e9, high = -1;
 
     for (int i = 0; i < n; ++i) {
       cin >> v[i];
-      high = max(high, v[i]-prev);
-      prev = v[i];
+      high = max(high, v[i]);
+      low = min(low, v[i]);
     }
 
-    if (!can(high)) high++;
-    cout << "Case " << _t+1 << ": " << high << endl;
+    int mid, k;
+    while (high >= low) {
+      mid = (low+high) / 2;
+      if (can(mid)) {
+        k = mid;
+        high = mid-1;
+      } else {
+        low = mid+1;
+      }
+    }
+
+    if (can(k-1)) k = k-1;
+
+    cout << "Case " << _t+1 << ": " << k << endl;
 
 
   }
