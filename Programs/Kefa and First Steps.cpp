@@ -24,8 +24,8 @@ typedef std::pair<int, int> pii;
 
 
 int n;
-int a[10005];
-int dp[10005];
+int a[100005];
+int dp[100005];
 
 
 void SOLVE() {
@@ -35,7 +35,7 @@ void SOLVE() {
     cin >> a[i];
   }
   dp[0] = 1;
-  int ans = 0;
+  int ans = 1;
   for (int i = 1; i < n; ++i) {
     if (a[i-1] <= a[i]) {
       dp[i] = 1 + dp[i-1];
