@@ -41,7 +41,7 @@ ll take(int id, int num_taken, int sum) {
 
 /*
 optimization idea: take all numbers, reduce mod d, calculate what can be added from each position 'i' in O(N^2)
-problem could be solved in total O(N^2*Q) ?
+but then solution would be in O(N^2 * Q), which is slower than this solution, O(N*M*D)
 */
 
 void SOLVE() {
