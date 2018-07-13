@@ -14,6 +14,7 @@
 #include <unordered_map>
 #include <functional>
 #include <bitset>
+#include <sstream>
 
 #define endl '\n'
 #define EPS 1e-9
@@ -23,44 +24,42 @@ typedef long long ll;
 typedef std::pair<int, int> pii;
 
 
-// the cost of cut is determined by the length of the stick being cut
-// minimize the cost
-
-int L, N;
-int A[55];
+int n;
+int cutpos[55];
 
 int dp[55][55];
 
-int cut(int left, int right) {
-  if (left+1 == right) return 0; //no need to cut
-  if (dp[left][right] != -1) return dp[left][right];
-
-  //try all possible cutting points and pick best
-  int mini = 2e9;
-  for (int i = left+1; i <= right-1; ++i) {
-    // mini = min( cost + cut(L, i) + cut(i, R) )
-    mini = min(mini, cut(left, i) + cut(i, right));
+int cut(int i, int j) {
+  if (i+1 == j) return 0; //for the foor loop below
+  
+  int& ref = dp[i][j];
+  if (ref != -1) return ref;
+  
+  ref = 2e9;
+  
+  for (int k = i+1; k < j; ++k) {
+    ref = min(ref, cut(i, k) + cut(k, j));
   }
-  return dp[left][right] = (A[right] - A[left]) + mini;
+  //return best result PLUS cost of cutting from i to j
+  return ref = ref + (cutpos[j]-cutpos[i]);
 }
 
 
-
 void SOLVE() {
-
-  while (cin >> L >> N, L != 0) {
-    memset(dp, -1, sizeof(dp));
-
-    A[0] = 0;
-    for (int i = 1; i <= N; ++i) {
-      cin >> A[i];
+  
+  int l;
+  while (cin >> l, l != 0) {
+    cin >> n;
+    for (int i = 1; i <= n; ++i) {
+      cin >> cutpos[i];
     }
-    A[N+1] = L;
+    cutpos[0] = 0;
+    cutpos[n+1] = l;
 
-    cout << "The minimum cutting is " << cut(0, N+1) << ".\n";
+    memset(dp, -1, sizeof(dp));
+    cout << "The minimum cutting is " << cut(0, n+1) << ".\n";
   }
-
-
+  
 
 }
 
@@ -74,6 +73,13 @@ int main() {
   #endif
   SOLVE();
 }
+
+
+
+
+
+
+
 
 
 
