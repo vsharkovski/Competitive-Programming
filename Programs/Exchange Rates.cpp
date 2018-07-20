@@ -35,7 +35,6 @@ int VISITED = 0, UNVISITED = -1;
 
 
 unordered_map<string, int> nametonum;
-string numtoname[65];
 
 int numitems;
 
@@ -81,11 +80,11 @@ int m, n;
   
 void assertion() {
   if (nametonum.count(itema) == 0) {
-    nametonum[itema] = numitems; numtoname[numitems] = itema;
+    nametonum[itema] = numitems;
     ++numitems;
   }
   if (nametonum.count(itemb) == 0) {
-    nametonum[itemb] = numitems;  numtoname[numitems] = itemb;
+    nametonum[itemb] = numitems;
     ++numitems;
   }
   a = nametonum[itema], b = nametonum[itemb];
