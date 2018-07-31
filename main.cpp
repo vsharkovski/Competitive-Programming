@@ -4,6 +4,7 @@
 #include <cstring>
 #include <cmath>
 #include <complex>
+#include <functional>
 #include <utility>
 #include <string>
 #include <vector>
@@ -12,7 +13,7 @@
 #include <map>
 #include <unordered_set>
 #include <unordered_map>
-#include <functional>
+#include <list>
 #include <bitset>
 #include <sstream>
 
@@ -32,18 +33,7 @@ typedef std::vector<int> vi;
 
 
 
-
-
-
-
-
 void SOLVE() {
-  
-
-
-
-
-
 
 
 
@@ -51,7 +41,6 @@ void SOLVE() {
 
 
 }
-
 
 
 int main() {
@@ -63,7 +52,6 @@ int main() {
   #endif
   SOLVE();
 }
-
 
 
 
