@@ -1,4 +1,4 @@
-// My attempt at a solution. I don't know graphs as of right now
+// My attempt at a solution. I don't know graphs as of right now (June 2018)
 
 #include <bits/stdc++.h>
 using namespace std;
