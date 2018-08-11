@@ -1,21 +1,4 @@
-#include <iostream>
-#include <iomanip>
-#include <algorithm>
-#include <cstring>
-#include <cmath>
-#include <complex>
-#include <functional>
-#include <utility>
-#include <string>
-#include <vector>
-#include <queue>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <list>
-#include <bitset>
-#include <sstream>
+#include <bits/stdc++.h>
 
 #define endl '\n'
 #define EPS 1e-9
@@ -27,20 +10,23 @@ typedef std::pair<int, int> ii;
 typedef std::vector<ii> vii;
 typedef std::vector<int> vi;
 
+const int M = 1e9 + 7;
+ll gcd(ll a, ll b){ while(b){ll t = a % b; b = a; a = t;} return a;}
+ll powmod(ll a, ll b){ll res = 1; a %= M; while(b){ if(b&1)res=res*(a%M); a=a*(a%M); b>>=1;} return res;}
 
 
 
 
-
-
-void SOLVE() {
-
-
-
-
-
-
+void Solve() {
+  
+  
+  
+  
+  
+  
 }
+
+
 
 
 int main() {
@@ -50,13 +36,8 @@ int main() {
   std::freopen("in.txt", "r", stdin);
   std::freopen("out.txt", "w", stdout);
   #endif
-  SOLVE();
+  Solve();
 }
-
-
-
-
-
 
 
 
