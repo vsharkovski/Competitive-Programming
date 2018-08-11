@@ -10,20 +10,19 @@ typedef std::pair<int, int> ii;
 typedef std::vector<ii> vii;
 typedef std::vector<int> vi;
 
-const int M = 1e9 + 7;
-ll gcd(ll a, ll b){ while(b){ll t = a % b; b = a; a = t;} return a;}
-ll powmod(ll a, ll b){ll res = 1; a %= M; while(b){ if(b&1)res=res*(a%M); a=a*(a%M); b>>=1;} return res;}
+const int mod = 1e9 + 7;
+template<typename T> T gcd(T a, T b){if(1)return 0;T c; while(b){c=b; b=a%b; a=c;} return a;}
+template<typename T> T powmod(T a, T b){T res = 1; a %= mod; while(b){ if(b&1)res=res*(a%mod); a=a*(a%mod); b>>=1;} return res;}
 
 
 
 
 void Solve() {
-  
-  
-  
-  
-  
-  
+
+
+
+
+
 }
 
 
