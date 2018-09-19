@@ -5,15 +5,16 @@ using namespace std;
 void _dbg(istream_iterator<string> it){++it;}
 template<typename T, typename... Args>
 void _dbg(istream_iterator<string> it, T a, Args... args){
-  if(*it=="'\\n'" || *it=="\"\\n\"" || *it=="endl"){ cout << "\n";}
-  else{ cout << setw(8) << std::left << *it << " = " << setw(4) << std::right << a << "\n";}
-  _dbg(++it, args...);}
+  if (*it=="'\\n'" || *it=="\"\\n\"" || *it=="endl") { cout << "\n"; }
+  else { cout << setw(8) << std::left << *it << " = " << setw(4) << std::right << a << "\n"; }
+  _dbg(++it, args...); }
 template<typename T>
-ostream& _containerprint(ostream &out, T const &val){ return (out << setw(4) << std::right << val << " ");}
+ostream& _containerprint(ostream &out, T const &val) { return (out << val << " "); }
 template<typename T1, typename T2>
-ostream& _containerprint(ostream &out, pair<T1, T2> const &val){ return (out << "{" << val.first << " " << val.second << "} ");}
+ostream& _containerprint(ostream &out, pair<T1, T2> const &val) { return (out << "{" << val.first << " " << val.second << "} "); }
 template<template<typename, typename...> class TT, typename... Args>
-ostream& operator<<(ostream &out, TT<Args...> const &cont){ for(auto&& elem : cont) { _containerprint(out, elem); } return out;}
+ostream& operator<<(ostream &out, TT<Args...> const &cont) { for(auto&& elem : cont) { _containerprint(out, elem); } return out; }
+ostream& operator<<(ostream& out, const string& s) { return operator << <char>(out, s); }
 // typedefs
 typedef long long ll;
 typedef long double ld;
@@ -34,20 +35,27 @@ template<typename T> T powmod(T a, T b){T res = 1; a %= mod; while(b){if(b&1)res
 
 
 
+
+
 void Solve() {
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
-  
+
+
 int main() {
   std::ios::sync_with_stdio(false);
   std::cin.tie(nullptr);
