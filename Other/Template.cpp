@@ -1,4 +1,21 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <iomanip>
+#include <algorithm>
+#include <utility>
+#include <cmath>
+#include <cstring>
+#include <functional>
+#include <iterator>
+#include <bitset>
+#include <vector>
+#include <set>
+#include <map>
+#include <unordered_set>
+#include <unordered_map>
+#include <string>
+#include <sstream>
+#include <queue>
+#include <deque>
 using namespace std;
 // printing
 #define dbg(args...) { string _s = #args; replace(_s.begin(), _s.end(), ',', ' '); stringstream _ss(_s); istream_iterator<string> _it(_ss); _dbg(_it, args); }
@@ -9,12 +26,12 @@ void _dbg(istream_iterator<string> it, T a, Args... args){
   else { cout << setw(8) << std::left << *it << " = " << setw(4) << std::right << a << "\n"; }
   _dbg(++it, args...); }
 template<typename T>
-ostream& _containerprint(ostream &out, T const &val) { return (out << val << " "); }
+std::ostream& _containerprint(std::ostream &out, T const &val) { return (out << val << " "); }
 template<typename T1, typename T2>
-ostream& _containerprint(ostream &out, pair<T1, T2> const &val) { return (out << "{" << val.first << " " << val.second << "} "); }
+std::ostream& _containerprint(std::ostream &out, std::pair<T1, T2> const &val) { return (out << "{" << val.first << " " << val.second << "} "); }
 template<template<typename, typename...> class TT, typename... Args>
-ostream& operator<<(ostream &out, TT<Args...> const &cont) { for(auto&& elem : cont) { _containerprint(out, elem); } return out; }
-ostream& operator<<(ostream& out, const string& s) { return operator << <char>(out, s); }
+std::ostream& operator<<(std::ostream &out, const TT<Args...> &cont) { for(auto&& elem : cont) { _containerprint(out, elem); } return out; }
+std::ostream& operator<<(std::ostream &out, const std::string &s) { return operator << <char>(out, s); }
 // typedefs
 typedef long long ll;
 typedef long double ld;
