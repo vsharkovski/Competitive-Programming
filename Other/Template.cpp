@@ -27,9 +27,9 @@ void _dbg(istream_iterator<string> it, T a, Args... args){
   else { cout << setw(8) << std::left << *it << " = " << setw(4) << std::right << a << "\n"; }
   _dbg(++it, args...); }
 template<typename T>
-std::ostream& _containerprint(std::ostream &out, T const &val) { return (out << val << " "); }
+std::ostream& _containerprint(std::ostream &out, T const &val) { return (out << setw(4) << val << " "); }
 template<typename T1, typename T2>
-std::ostream& _containerprint(std::ostream &out, std::pair<T1, T2> const &val) { return (out << "{" << val.first << " " << val.second << "} "); }
+std::ostream& _containerprint(std::ostream &out, std::pair<T1, T2> const &val) { return (out << "{" << setw(4) << val.first << " " << setw(4) << val.second << "} "); }
 template<template<typename, typename...> class TT, typename... Args>
 std::ostream& operator<<(std::ostream &out, const TT<Args...> &cont) { for(auto&& elem : cont) { _containerprint(out, elem); } return out; }
 std::ostream& operator<<(std::ostream &out, const std::string &s) { return operator << <char>(out, s); }
