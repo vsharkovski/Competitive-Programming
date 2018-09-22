@@ -33,15 +33,14 @@ std::ostream& _containerprint(std::ostream &out, std::pair<T1, T2> const &val) {
 template<template<typename, typename...> class TT, typename... Args>
 std::ostream& operator<<(std::ostream &out, const TT<Args...> &cont) { for(auto&& elem : cont) { _containerprint(out, elem); } return out; }
 std::ostream& operator<<(std::ostream &out, const std::string &s) { return operator << <char>(out, s); }
-// typedefs
+// other
+#define endl '\n'
+#define all(v) begin(v), end(v)
 typedef long long ll;
 typedef long double ld;
 typedef std::pair<int, int> ii;
 typedef std::vector<ii> vii;
 typedef std::vector<int> vi;
-// other
-#define endl '\n'
-#define all(v) begin(v), end(v)
 const double EPS = 1e-9;
 const ll mod = 1e9 + 7;
 template<typename T> T gcd(T a, T b){T c; while(b){c=b; b=a%b; a=c;} return a;}
