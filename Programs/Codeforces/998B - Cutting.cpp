@@ -57,18 +57,8 @@ template<typename T> T powmod(T a, T b){T res = 1; a %= mod; while(b){if(b&1)res
 
 
 int n;
-vi a, numodd, numeven;;
-
-int m;
+vi a, numodd, numeven;
 vi cuts;
-int dp[101][101];
-
-int f(int i, int b) {
-  if (b < 0) return -1;
-  if (i == m || b == 0) return 0;
-  if (dp[i][b] != -1) return dp[i][b];
-  return dp[i][b] = max(f(i+1, b), 1 + f(i+1, b - cuts[i]));
-}
 
 void Solve() {
   int B;
@@ -93,13 +83,14 @@ void Solve() {
     }
   }
   sort(all(cuts));
-  m = cuts.size();
   
-  memset(dp, -1, sizeof(dp));
-  int ans = f(0, B);
+  int ans = 0;
+  for (int i = 0; i < cuts.size(); ++i) {
+    if (cuts[i] <= B) ++ans, B -= cuts[i];
+    else break;
+  }
+
   cout << ans << endl;
-
-
 
 
 
