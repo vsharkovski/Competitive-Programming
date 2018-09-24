@@ -17,6 +17,7 @@
 #include <queue>
 #include <deque>
 #include <list>
+#include <stack>
 using namespace std;
 // printing
 #define dbg(args...) { string _s = #args; replace(_s.begin(), _s.end(), ',', ' '); stringstream _ss(_s); istream_iterator<string> _it(_ss); _dbg(_it, args); }
