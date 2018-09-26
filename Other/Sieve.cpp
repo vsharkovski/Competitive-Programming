@@ -27,4 +27,5 @@ vi primeFactors(ll x) {
     }
   }
   if (x != 1) factors.push_back(x);
+  return factors;
 }
