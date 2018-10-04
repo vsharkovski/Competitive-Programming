@@ -55,24 +55,10 @@ template<typename T> T powmod(T a, T b){T res = 1; a %= mod; while(b){if(b&1)res
 
 
 
-int S, E;
-vi pals;
-
-int dp[100100];
-
-int f(int x) {
-  if (x == E) return 0;
-  if (x > E) return 1e6;
-  if (dp[x] != -1) return dp[x];
-  int res = 1e6;
-  for (int y : pals) {
-    if (y >= x) break;
-    res = min(res, 1 + f(x+y));
-  }
-  return dp[x] = res;
-}
 
 void Solve() {
+
+  vi pals;
   for (int i = 2; i <= 9; ++i)
     pals.push_back(i);
   for (int i = 1; i <= 9; ++i)
@@ -87,25 +73,35 @@ void Solve() {
     for (int j = 0; j <= 9; ++j)
       for (int k = 0; k <= 9; ++k)
         pals.push_back(10001*i+1010*j+100*k);
-  memset(dp, -1, sizeof(dp));
   
+  int S, E;
   cin >> S >> E;
-  cout << f(S) << endl;
 
-//  while (E >= S) {
-//    cout << "dp[" << E << "] = " << dp[E] << endl;
-//    --E;
-//  }
+  int dp[100100];
   
+  dp[E] = 0;
+  for (int x = E-1; x >= S; --x) {
+    dp[x] = 1e9;
+    for (int y : pals) {
+      if (y >= x || x+y > E) break;
+      dp[x] = min(dp[x], 1 + dp[x+y]);
+    }
+  }
 
-
-
+  cout << dp[S] << endl;
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
 }
-
-
-
-
 
 
 int main() {
