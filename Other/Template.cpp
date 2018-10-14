@@ -20,6 +20,7 @@
 #include <stack>
 using namespace std;
 // printing
+#ifdef _DEBUG
 #define dbg(args...) { string _s = #args; replace(_s.begin(), _s.end(), ',', ' '); stringstream _ss(_s); istream_iterator<string> _it(_ss); _dbg(_it, args); }
 void _dbg(istream_iterator<string> it){++it;}
 template<typename T, typename... Args>
@@ -34,6 +35,7 @@ std::ostream& _containerprint(std::ostream &out, std::pair<T1, T2> const &val) {
 template<template<typename, typename...> class TT, typename... Args>
 std::ostream& operator<<(std::ostream &out, const TT<Args...> &cont) { for(auto&& elem : cont) { _containerprint(out, elem); } return out; }
 std::ostream& operator<<(std::ostream &out, const std::string &s) { return operator << <char>(out, s); }
+#endif
 // other
 #define endl '\n'
 #define all(v) begin(v), end(v)
