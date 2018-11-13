@@ -7,5 +7,4 @@ Problem sources:
 - http://codeforces.com/
 - https://uva.onlinejudge.org/
 - https://csacademy.com/
-
-Note: do not assume ALL of the solutions here for UVa are mine; I've used it as a learning platform. Still most, are mine.
+- https://wcipeg.com/
