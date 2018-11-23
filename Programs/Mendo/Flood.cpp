@@ -20,7 +20,7 @@ inline bool in(int r, int c) {
 }
 
 int maxarea[300][11]; //maxarea[i][j] = max area for i-th room if plugging j leaks
-int dp[300][3001]; //dp[i][k] = max possible to plug for rooms [0..i] having spent k money
+int dp[300][3001]; //dp[i][k] = max possible area considering plugging rooms [0..i] and having spent k money
 
 int room[20][20];
 vector<ii> leaks;
