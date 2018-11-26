@@ -13,7 +13,9 @@ typedef vector<ll> vl;
 typedef vector<ld> vd;
 typedef vector<pi> vpi;
 typedef vector<pl> vpl;
-template <class T> using Tree = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+template <class Key, class Compare = less<Key>> // find_by_order, order_of_key
+using Tree = tree<Key, null_type, Compare, rb_tree_tag, tree_order_statistics_node_update>;
+
 
 
 
@@ -21,9 +23,9 @@ template <class T> using Tree = tree<T, null_type, less<T>, rb_tree_tag, tree_or
 void _SOLVE_() {
 
 
+
+
 }
-
-
 
 int main() {
   ios::sync_with_stdio(false);
