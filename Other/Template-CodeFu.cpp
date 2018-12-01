@@ -32,6 +32,7 @@ public:
 };
 
 #ifdef _DEBUG
+#include <iostream>
 int main() {
 
 }
