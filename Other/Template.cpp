@@ -13,7 +13,7 @@ typedef vector<ll> vl;
 typedef vector<ld> vd;
 typedef vector<pi> vpi;
 typedef vector<pl> vpl;
-template <class Key, class Compare = less<Key>> // find_by_order, order_of_key
+template <class Key, class Compare = less<Key>> // find_by_order, order_of_key (for multiset: pair(val, time of insertion))
 using Tree = tree<Key, null_type, Compare, rb_tree_tag, tree_order_statistics_node_update>;
 
 
