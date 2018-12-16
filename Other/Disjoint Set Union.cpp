@@ -12,14 +12,8 @@ public:
   inline bool unite(int x, int y) {
     x = get(x), y = get(y);
     if (x != y) {
-      if (rank[x] > rank[y]) {
-        p[y] = x;
-      } else {
-        p[x] = y;
-        if (rank[x] == rank[y]) {
-          ++rank[y];
-        }
-      }
+      if (rank[x] > rank[y]) p[y] = x; else p[x] = y;
+      if (rank[x] == rank[y]) ++rank[y];
       return true;
     }
     return false;
