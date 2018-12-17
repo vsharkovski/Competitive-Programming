@@ -18,6 +18,78 @@ using Tree = tree<Key, null_type, Compare, rb_tree_tag, tree_order_statistics_no
 
 
 
+
+void _SOLVE_() {
+  stringstream ss;
+  string line;
+  int TC;
+  cin >> TC;
+  while (TC--) {
+
+    int P, T;
+    cin >> P >> T;
+
+    vector<set<int>> opinion(P);
+
+    getline(cin, line);
+    while (getline(cin, line), line != "") {
+      ss << line;
+      int i, j;
+      ss >> i >> j;
+      --i, --j;
+      opinion[i].insert(j);
+      ss.clear();
+    }
+
+    int numcc = P;
+    for (int i = 0; i < P; ++i) {
+      for (int j = i-1; j >= 0; --j) {
+        if (opinion[i] == opinion[j]) {
+          --numcc;
+          break;
+        }
+      }
+    }
+
+    cout << numcc << endl;
+    if (TC > 0) cout << endl;
+  }
+}
+
+
+int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  #ifdef _DEBUG
+  freopen("in.txt", "r", stdin);
+  freopen("out.txt", "w", stdout);
+  #endif
+  _SOLVE_();
+}
+
+
+/**
+
+#include <bits/stdc++.h>
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace std;
+using namespace __gnu_pbds;
+typedef long long ll;
+typedef long double ld;
+typedef pair<int, int> pi;
+typedef pair<ll, ll> pl;
+typedef pair<ld, ld> pd;
+typedef vector<int> vi;
+typedef vector<ll> vl;
+typedef vector<ld> vd;
+typedef vector<pi> vpi;
+typedef vector<pl> vpl;
+template <class Key, class Compare = less<Key>> // find_by_order, order_of_key (for multiset: pair(val, time of insertion))
+using Tree = tree<Key, null_type, Compare, rb_tree_tag, tree_order_statistics_node_update>;
+
+
+
 class dsu {
 public:
   vector<int> p, rank;
@@ -96,3 +168,5 @@ int main() {
   #endif
   _SOLVE_();
 }
+
+**/
