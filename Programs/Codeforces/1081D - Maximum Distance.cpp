@@ -18,6 +18,98 @@ using Tree = tree<Key, null_type, Compare, rb_tree_tag, tree_order_statistics_no
 
 
 
+
+int V, E, K;
+vector<pi> G[100005];
+bool special[100005];
+int specialsrc;
+
+bool possible(int cost) {
+  bool visited[100005];
+  queue<int> q;
+  int numspecial = 0;
+  memset(visited, 0, sizeof(visited));
+  visited[specialsrc] = 1;
+  q.push(specialsrc);
+  while (!q.empty()) {
+    int u = q.front(); q.pop();
+    if (special[u]) {
+      ++numspecial;
+    }
+    for (pi& to : G[u]) {
+      int v = to.first, w = to.second;
+      if (w <= cost && visited[v] == 0) {
+        visited[v] = 1;
+        q.push(v);
+      }
+    }
+  }
+  return numspecial == K;
+}
+
+void _SOLVE_() {
+  cin >> V >> E >> K;
+  memset(special, 0, sizeof(special));
+  for (int i = 0; i < K; ++i) {
+    int x;
+    cin >> x;
+    --x;
+    special[x] = 1;
+    specialsrc = x;
+  }
+  for (int i = 0; i < E; ++i) {
+    int u, v, w;
+    cin >> u >> v >> w;
+    --u, --v;
+    G[u].emplace_back(v, w);
+    G[v].emplace_back(u, w);
+  }
+  int lo = 1, hi = 1e9, mid, ans = 1e9;
+  while (lo <= hi) {
+    mid = (lo + hi) / 2;
+    if (possible(mid)) {
+      ans = mid;
+      hi = mid-1;
+    } else {
+      lo = mid+1;
+    }
+  }
+  for (int i = 0; i < K; ++i) {
+    cout << ans << " ";
+  }
+}
+
+int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  #ifdef _DEBUG
+  freopen("in.txt", "r", stdin);
+  freopen("out.txt", "w", stdout);
+  #endif
+  _SOLVE_();
+}
+
+/**
+#include <bits/stdc++.h>
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace std;
+using namespace __gnu_pbds;
+typedef long long ll;
+typedef long double ld;
+typedef pair<int, int> pi;
+typedef pair<ll, ll> pl;
+typedef pair<ld, ld> pd;
+typedef vector<int> vi;
+typedef vector<ll> vl;
+typedef vector<ld> vd;
+typedef vector<pi> vpi;
+typedef vector<pl> vpl;
+template <class Key, class Compare = less<Key>> // find_by_order, order_of_key (for multiset: pair(val, time of insertion))
+using Tree = tree<Key, null_type, Compare, rb_tree_tag, tree_order_statistics_node_update>;
+
+
+
 class DSU {
 public:
   vector<int> p, rank;
@@ -115,3 +207,4 @@ int main() {
   #endif
   _SOLVE_();
 }
+**/
