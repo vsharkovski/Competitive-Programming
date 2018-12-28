@@ -1,100 +1,69 @@
 #include <bits/stdc++.h>
-
-#define endl '\n'
-#define EPS 1e-9
-#define all(v) begin(v), end(v)
-
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/assoc_container.hpp>
 using namespace std;
+using namespace __gnu_pbds;
 typedef long long ll;
-typedef std::pair<int, int> ii;
-typedef std::vector<ii> vii;
-typedef std::vector<int> vi;
+typedef long double ld;
+typedef pair<int, int> pi;
+typedef pair<ll, ll> pl;
+typedef pair<ld, ld> pd;
+typedef vector<int> vi;
+typedef vector<ll> vl;
+typedef vector<ld> vd;
+typedef vector<pi> vpi;
+typedef vector<pl> vpl;
+template <class Key, class Compare = less<Key>> // find_by_order, order_of_key (for multiset: pair(val, time of insertion))
+using Tree = tree<Key, null_type, Compare, rb_tree_tag, tree_order_statistics_node_update>;
 
-const ll mod = 1e9 + 7;
-template<typename T> T gcd(T a, T b){T c; while(b){c=b; b=a%b; a=c;} return a;}
-template<typename T> T powmod(T a, T b){T res = 1; a %= mod; while(b){ if(b&1)res=res*(a%mod); a=a*(a%mod); b>>=1;} return res;}
 
 
 
 
-// 0, 1,  2, 3,  4, 5,  6, 7
-// n, ne, e, se, s, sw, w, nw
-int dx[8] = {0, 1, 1, 1, 0, -1, -1, -1};
-int dy[8] = {1, 1, 0, -1, -1, -1, 0, 1};
+int N;
+int T[32];
+bool visited[302][302][31][8];
+bool used[302][302];
 
-int nxd[8][2] = {{7, 1}, {0, 2}, {1, 3}, {2, 4}, {3, 5}, {4, 6}, {5, 7}, {6, 0}};
+int dr[8] = {-1, -1, 0, 1, 1, 1, 0, -1};
+int dc[8] = {0, 1, 1, 1, 0, -1, -1, -1};
 
-int n;
-int t[32];
-bool dp[302][302][31][8]; // x, y, recursion level, direction
-bool visited[302][302];
+int ans;
 
-void napraj(int x, int y, int i, int d) {
-  if (i == n || dp[x][y][i][d]) return;
-  
-  dp[x][y][i][d] = 1;
-  for (int ti = 0; ti < t[i]; ++ti) {
-    x += dx[d];
-    y += dy[d];
-    visited[x][y] = 1;
-  }
-  
-  napraj(x, y, i+1, nxd[d][0]);
-  napraj(x, y, i+1, nxd[d][1]);
-}
-
-void Solve() {
-  cin >> n;
-  for (int i = 0; i < n; ++i) {
-    cin >> t[i];
-  }
-  
-  memset(visited, 0, sizeof(visited));
-  memset(dp, 0, sizeof(dp));
-  napraj(150, 150, 0, 0);
-
-  int cnt = 0;
-  for (int i = 0; i <= 301; ++i) {
-    for (int j = 0; j <= 301; ++j) {
-      if (visited[i][j]) ++cnt;
+void dfs(int r, int c, int i, int d) {
+  if (visited[r][c][i][d]) return;
+  visited[r][c][i][d] = true;
+  if (i == N) return;
+  for (int j = 0; j < T[i]; ++j) {
+    r += dr[d];
+    c += dc[d];
+    if (used[r][c] == false) {
+      ++ans;
+      used[r][c] = true;
     }
   }
-  
-  cout << cnt << endl;
-  
-//  for (int i = 160; i >= 140; --i) {
-//    for (int j = 160; j >= 140; --j) {
-//      if (visited[j][i]) cout << 'o'; else cout << '.';
-//    }
-//    cout << endl;
-//  }
-  
+  dfs(r, c, i + 1, (d + 7) % 8);
+  dfs(r, c, i + 1, (d + 1) % 8);
+}
+
+void _SOLVE_() {
+  cin >> N;
+  for (int i = 0; i < N; ++i) {
+    cin >> T[i];
+  }
+  memset(visited, 0, sizeof(visited));
+  memset(used, 0, sizeof(used));
+  ans = 0;
+  dfs(150, 150, 0, 0);
+  cout << ans << endl;
 }
 
 int main() {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
   #ifdef _DEBUG
-  std::freopen("in.txt", "r", stdin);
-  std::freopen("out.txt", "w", stdout);
+  freopen("in.txt", "r", stdin);
+  freopen("out.txt", "w", stdout);
   #endif
-  Solve();
+  _SOLVE_();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
