@@ -36,21 +36,19 @@ void _SOLVE_() {
   }
   int ans = 4 * n * n;
   int order[4] = {0, 1, 2, 3};
-  for (int tlc = 0; tlc < 2; ++tlc) {
-    do {
-      int res = 0;
-      for (int ii = 0; ii < 4; ++ii) {
-        int i = order[ii];
-        int topleft = ii % 2 == 0 ? 1 : 0;
-        for (int r = 0; r < n; ++r) {
-          for (int c = 0; c < n; ++c) {
-            res += ((r + c) % 2 == 0) ? board[i][r][c] == topleft : board[i][r][c] != topleft;
-          }
+  do {
+    int res = 0;
+    for (int ii = 0; ii < 4; ++ii) {
+      int i = order[ii];
+      int topleft = ii % 2 == 0 ? 1 : 0;
+      for (int r = 0; r < n; ++r) {
+        for (int c = 0; c < n; ++c) {
+          res += ((r + c) % 2 == 0) ? board[i][r][c] == topleft : board[i][r][c] != topleft;
         }
       }
-      ans = min(ans, res);
-    } while (next_permutation(order, order+4));
-  }
+    }
+    ans = min(ans, res);
+  } while (next_permutation(order, order+4));
   cout << ans << "\n";
 }
 
