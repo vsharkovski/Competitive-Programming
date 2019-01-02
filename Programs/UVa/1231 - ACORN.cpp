@@ -43,7 +43,7 @@ void Solution() {
     for (int h = mh; h >= 0; --h) {
       int bestifjumped = 0;
       // you could replace the following loop with a dp table
-      // dp[h] = bestifjumped at height h
+      // dp[h+f] = bestifjumped at height h
       // dp[h] = max( acorn[i][h] ), i = 0, 1, ..., nt-1
       for (int i = 0; i < nt; ++i) {
         if (h + f <= mh) {
