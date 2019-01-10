@@ -6,26 +6,20 @@ using namespace __gnu_pbds;
 typedef long long ll;
 typedef long double ld;
 typedef pair<int, int> pi;
-typedef pair<ll, ll> pl;
-typedef pair<ld, ld> pd;
 typedef vector<int> vi;
-typedef vector<ll> vl;
-typedef vector<ld> vd;
 typedef vector<pi> vpi;
-typedef vector<pl> vpl;
-template <class Key, class Compare = less<Key>> // find_by_order, order_of_key (for multiset: pair(val, time of insertion))
+template <class Key, class Compare = less<Key>>
 using Tree = tree<Key, null_type, Compare, rb_tree_tag, tree_order_statistics_node_update>;
 
 
 
 
-
-void _SOLVE_() {
-
+void Main() {
 
 
 
 }
+
 
 int main() {
   ios::sync_with_stdio(false);
@@ -34,5 +28,5 @@ int main() {
   freopen("in.txt", "r", stdin);
   freopen("out.txt", "w", stdout);
   #endif
-  _SOLVE_();
+  Main();
 }
