@@ -1,87 +1,55 @@
-#include <iostream>
-#include <iomanip>
-#include <algorithm>
-#include <cstring>
-#include <cmath>
-#include <complex>
-#include <functional>
-#include <utility>
-#include <string>
-#include <vector>
-#include <queue>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <list>
-#include <bitset>
-#include <sstream>
-
-#define endl '\n'
-#define EPS 1e-9
-#define all(v) begin(v), end(v)
-
+#include <bits/stdc++.h>
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/assoc_container.hpp>
 using namespace std;
+using namespace __gnu_pbds;
 typedef long long ll;
-typedef std::pair<int, int> ii;
-typedef std::vector<ii> vii;
-typedef std::vector<int> vi;
+typedef long double ld;
+typedef pair<int, int> pi;
+typedef vector<int> vi;
+template <class Key, class Compare = less<Key>>
+using Tree = tree<Key, null_type, Compare, rb_tree_tag, tree_order_statistics_node_update>;
 
 
 
 
 
-inline bool check(string &s, int len) {
-  for (int i = len; i < (int)s.length(); ++i) {
-    if (s[i] != s[i-len]) return false;
-  }
-  return true;
-}
 
-void MAIN() {
+
+void Main() {
   string s;
   while (cin >> s, s != ".") {
-
-    int strlen = s.length();
-    int ans = 1;
-
-    for (int x = 1; x*x <= strlen; ++x) {
-      if (strlen % x) continue;
-      int y = strlen / x;
-      if (check(s, x)) {
-        ans = max(ans, y);
-      } else if (check(s, y)) {
-        ans = max(ans, x);
+    set<int> divs;
+    int n = s.length();
+    for (int x = 1; x*x <= n; ++x) {
+      if (n % x == 0) {
+        divs.insert(x);
+        divs.insert(n/x);
       }
     }
-
-    cout << ans << endl;
+    for (int x : divs) {
+      bool ok = true;
+      for (int i = x; i < n; ++i) {
+        if (s[i] != s[i-x]) {
+          ok = false;
+          break;
+        }
+      }
+      if (ok) {
+        cout << n/x << '\n';
+        break;
+      }
+    }
   }
-
 }
-
-
 
 
 int main() {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
   #ifdef _DEBUG
-  std::freopen("in.txt", "r", stdin);
-  std::freopen("out.txt", "w", stdout);
+  freopen("in.txt", "r", stdin);
+  freopen("out.txt", "w", stdout);
   #endif
-  MAIN();
+  Main();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
