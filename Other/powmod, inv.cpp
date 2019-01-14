@@ -1,3 +1,4 @@
+typedef long long ll;
 const ll mod = 1e9 + 7;
 
 
@@ -24,3 +25,4 @@ ll powmod(ll a, ll b) {
 ll inv(ll a) {
   return powmod(a, mod - 2);
 }
+
