@@ -1,100 +1,98 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
-typedef pair<int, int> pi;
-typedef vector<int> vi;
- 
-//#include <ext/pb_ds/tree_policy.hpp>
-//#include <ext/pb_ds/assoc_container.hpp>
-//using namespace __gnu_pbds;
-//template <class Key, class Compare = less<Key>>
-//using Tree = tree<Key, null_type, Compare, rb_tree_tag, tree_order_statistics_node_update>;
- 
+
+
 const int MAXN = 300005;
- 
+
 int N;
 static int want[MAXN];
-static int parent[MAXN];
 vector<int> children[MAXN];
 static int depth[MAXN];
 static int answer[MAXN];
-set<pi> data[MAXN];
-set<pi>* pointer[MAXN];
- 
-void add(set<pi>* d, pi x, int dpth) {
-    auto it = d->insert(x).first;
-    if (it != d->begin() && prev(it)->second >= x.second) {
-        // x can be ignored since prev.first < x.first (the id)
-        // so a node with bigger 'want' will already be processed before x
-        // so remove x
-        answer[x.first] = depth[x.first] - dpth - 1;
-        d->erase(it);
-        return;
-    }
-    ++it;
-    while (it != d->end() && it->second <= x.second) {
-        // same argument as above
-        answer[it->first] = depth[it->first] - dpth - 1;
-        auto nxt = next(it);
-        d->erase(it);
-        it = nxt;
-    }
-}
- 
-void dfs(int u, int dpth) {
-    depth[u] = dpth;
-    for (int v : children[u]) {
-        dfs(v, dpth+1);
-        // merge data from children
-        if (pointer[v]->size() > pointer[u]->size()) {
-            swap(pointer[v], pointer[u]);
-        }
-        while (pointer[v]->size() > 0) {
-            auto beg = pointer[v]->begin();
-            add(pointer[u], *beg, depth[u]);
-            pointer[v]->erase(beg);
-        }
-    }
-    // add current to data
-    add(pointer[u], pi(u, want[u]), depth[u]);
-//    cout << "u=" << u << ": ";
-//    for (auto& zz : *pointer[u]) {
-//        cout << zz.first << ' ' << zz.second << " ; ";
-//    }
-//    cout << endl;
-}
- 
-void Main() {
+set<int> data[MAXN];
+
+void depthDFS(int, int);
+void dfs(int);
+void mergeData(set<int>&, set<int>&, int);
+void addToData(set<int>&, int, int);
+
+
+int main() {
     cin >> N >> want[0];
     ++N;
     for (int i = 1; i < N; ++i) {
-        cin >> want[i] >> parent[i];
-        children[parent[i]].push_back(i);
+        int parent;
+        cin >> want[i] >> parent;
+        children[parent].push_back(i);
     }
-    for (int i = 0; i < N; ++i) {
-        pointer[i] = &data[i];
-    }
-    dfs(0, 0);
-    // clear the data from 0 (the source)
-    while (pointer[0]->size() > 0) {
-        auto beg = pointer[0]->begin();
-        answer[beg->first] = depth[beg->first] - depth[0];
-        pointer[0]->erase(beg);
-    }
+    depthDFS(0, 0);
+    dfs(0);
     for (int i = 1; i < N; ++i) {
         cout << answer[i] << '\n';
     }
 }
- 
- 
- 
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    #ifdef _DEBUG
-//        freopen("in.txt", "r", stdin);
-//        freopen("out.txt", "w", stdout);
-    #endif
-    Main();
-    return 0;
+
+void depthDFS(int u, int currDepth) {
+    depth[u] = currDepth;
+    for (int v : children[u]) {
+        depthDFS(v, currDepth + 1);
+    }
+}
+
+void dfs(int u) {
+    for (int v : children[u]) {
+        dfs(v);
+        if (data[v].size() > data[u].size()) {
+            swap(data[u], data[v]);
+        }
+        mergeData(data[u], data[v], u);
+    }
+    addToData(data[u], u, u);
+    if (u == 0) {
+        // clear the data from 0 (the source), since it has no parent
+        while (!data[0].empty()) {
+            set<int>::iterator first = data[0].begin();
+            answer[*first] = depth[*first] - depth[0];
+            data[0].erase(first);
+        }
+    }
+}
+
+void mergeData(set<int>& d1, set<int>& d2, int dfsNode) {
+    while (!d2.empty()) {
+        addToData(d1, *d2.begin(), dfsNode);
+        d2.erase(d2.begin());
+    }
+}
+
+void addToData(set<int>& d, int x, int dfsNode) {
+    d.insert(x);
+    set<int>::iterator curr = d.find(x);
+    bool removed = false;
+    if (curr != d.begin()) {
+        // x is not the first element in data
+        // elements before x are processed before x
+        set<int>::iterator previ = prev(curr);
+        if (want[*previ] >= want[x]) {
+            // an element before x has a
+            // "want value" bigger than the "want value" of x
+            // since for this problem the nodes are processed by increasing node number,
+            // x will be useless. so remove x
+            answer[x] = depth[x] - depth[dfsNode] - 1;
+            d.erase(curr);
+            removed = true;
+        }
+    }
+    if (removed == false) {
+        set<int>::iterator nxt = next(curr); // the element in data after x
+        while (nxt != d.end() && want[x] >= want[*nxt]) {
+            // the same logic as above, except this time x is the "previous element",
+            // and "nxt" has the role of x
+            answer[*nxt] = depth[*nxt] - depth[dfsNode] - 1;
+            // some tricks to erase "nxt" and then go to the element after it
+            set<int>::iterator temp = next(nxt);
+            d.erase(nxt);
+            nxt = temp;
+        }
+    }
 }
