@@ -88,14 +88,12 @@ void Main() {
             }
         }
     }
-    int i = 0;
-    while (d > 0) {
-        int v = G[1][i];
+    for (int v : G[1]) {
+        if (d == 0) break;
         if (dsu.unite(1, v)) {
             edges.emplace_back(1, v);
             --d;
         }
-        ++i;
     }
     for (int u = 2; u <= n; ++u) {
         for (int v : G[u]) {
@@ -118,6 +116,8 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(0);
     #ifndef _DEBUG
+//        freopen("optmilk.in", "r", stdin);
+//        freopen("optmilk.out", "w", stdout);
     #endif
     Main();
     return 0;
