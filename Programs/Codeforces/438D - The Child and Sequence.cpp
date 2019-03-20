@@ -10,8 +10,8 @@ const int maxn = 100005;
 
 int n, m;
 ll a[maxn];
-ll st_sum[4*maxn];
-ll st_max[4*maxn];
+ll st_sum[3*maxn];
+ll st_max[3*maxn];
 
 void build(int k, int x, int y) {
     if (x == y) {
