@@ -18,8 +18,6 @@ typedef vector<int> vi;
 
 
 
-//#include <iostream>
-
 class MisteriousLetter
 {
   public:
@@ -35,12 +33,3 @@ class MisteriousLetter
     }
 };
 
-
-
-//
-//#ifdef _DEBUG
-//int main() {
-//    MagicBoxes m;
-//    cout << m.getReport(712345077, 117109, {430,427,41,297}, {853,115,816,896}) << endl;
-//}
-//#endif
