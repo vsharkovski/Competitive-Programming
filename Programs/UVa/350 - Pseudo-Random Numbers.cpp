@@ -1,10 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-typedef pair<int, int> pi;
-typedef vector<int> vi;
-
-
+typedef pair<int, int> pii;
 
 
 
@@ -15,38 +12,29 @@ int f(int x) {
 }
 
 pair<int, int> floyd(int x0) {
-     int t = f(x0), h = f(f(x0));
-     while (t != h) {
-        t = f(t), h = f(f(h));
-     }
-     int start = 0;
-     h = x0;
-     while (t != h) {
-        t = f(t), h = f(h);
-        ++start;
-     }
-     int length = 1;
-     h = f(t);
-     while (t != h) {
-        h = f(h);
-        ++length;
-     }
-     return pair<int, int>(start, length);
+    // make k*length steps
+    int a = f(x0), b = f(f(x0));
+    while (a != b) a = f(a), b = f(f(b));
+    // find first element in cycle
+    a = x0;
+    while (a != b) a = f(a), b = f(b);
+    int first = a;
+    // find length
+    int length = 1;
+    a = f(b);
+    while (a != b) a = f(a), ++length;
+    return pair<int, int>(first, length);
 }
 
 void Main() {
     int Case = 1;
-    while (cin >> Z >> I >> M >> L, Z != 0 || I != 0 || M != 0 || L != 0) {
-        pair<int, int> ans = floyd(L);
-        cout << "Case " << Case++ <<": " << ans.second << "\n";
+    while (cin >> Z >> I >> M >> L, Z+I+M+L != 0) {
+        cout << "Case " << Case++ << ": " << floyd(L).second << '\n';
     }
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(0);
-    #ifndef _DEBUG
-    #endif
     Main();
-    return 0;
 }
