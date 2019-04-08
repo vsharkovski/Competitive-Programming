@@ -1,44 +1,65 @@
-// find strongly connected components
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+typedef pair<int, int> pii;
 
-int V;
-vector<vi> G;
-vi dfs_num, dfs_low, S, visited;
-int dfsnumcalls;
 
-void tarjanSCC(int u) {
-  dfs_num[u] = dfs_low[u] = dfsnumcalls++;
-  visited[u] = 1;
-  S.push_back(u);
-  for (int v : G[u]) {
-    if (dfs_num[v] == -1) {
-      tarjanSCC(v);
+
+int n;
+vector<vector<int>> adj;
+
+vector<int> num, low, instk, stk;
+int calls;
+
+void tarjan(int u) {
+    num[u] = low[u] = calls++;
+    instk[u] = 1;
+    stk.push_back(u);
+    for (int v : adj[u]) {
+        if (num[v] == -1) {
+            tarjan(v);
+        }
+        if (instk[v]) {
+            low[u] = min(low[u], low[v]);
+        }
     }
-    if (visited[v]) {
-      dfs_low[u] = min(dfs_low[u], dfs_low[v]);
+    if (low[u] == num[u]) {
+        cout << "SCC: ";
+        while (true) {
+            int v = stk.back();
+            stk.pop_back();
+            instk[v] = 0;
+            // v is in SCC
+            cout << v << " ";
+            if (v == u) break;
+        }
+        cout << "\n";
     }
-  }
-  if (dfs_low[u] == dfs_num[u]) {
-    while (1) {
-      int v = S.back();
-      S.pop_back();
-      visited[v] = 0;
-      // ...
-      if (v == u) {
-        break;
-      }
-    }
-  }
 }
 
-
-
-//....
-  dfs_num.assign(V+1, -1);
-  dfs_low.assign(V+1, 0);
-  visited.assign(V+1, 0);
-  dfsnumcalls = 0;
-  for (int i = 1; i <= V; ++i) {
-    if (dfs_num[i] == -1) {
-      tarjanSCC(i);
+void Main() {
+    cin >> n;
+    adj.assign(n+1, vector<int>());
+    int m;
+    cin >> m;
+    while (m--) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
     }
-  }
+    num.assign(n+1, -1);
+    low.resize(n);
+    instk.assign(n+1, 0);
+    calls = 0;
+    for (int i = 1; i <= n; ++i) {
+        if (num[i] == -1) {
+            tarjan(i);
+        }
+    }
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    Main();
+}
