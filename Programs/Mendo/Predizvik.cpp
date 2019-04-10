@@ -1,102 +1,66 @@
 #include <bits/stdc++.h>
- 
-#define endl '\n'
-#define EPS 1e-9
-#define all(v) begin(v), end(v)
- 
 using namespace std;
 typedef long long ll;
-typedef std::pair<int, int> ii;
-typedef std::vector<ii> vii;
-typedef std::vector<int> vi;
- 
- 
-const ll mod = 1e9 + 7;
-template<typename T> T gcd(T a, T b){T c; while(b){c=b; b=a%b; a=c;} return a;}
-template<typename T> T powmod(T a, T b){T res = 1; a %= mod; while(b){ if(b&1)res=res*(a%mod); a=a*(a%mod); b>>=1;} return res;}
- 
- 
- 
- 
- 
- 
- 
- 
- 
-inline bool uslov(ll x, ll y) {
-  if (gcd(x, y) > 1) return false;
-  ll t = x*x + y*y, z = floor(sqrt(t));
-  return z*z == t;
+typedef pair<int, int> pii;
+
+
+
+const int maxn = 160;
+
+int gcd(int a, int b) {
+    return b == 0 ? a : gcd(b, a % b);
 }
- 
+
+bool good(ll a, ll b) {
+    if (gcd(a, b) != 1) return false;
+    ll csq = a*a + b*b;
+    ll c = floor(sqrt(csq));
+    return c*c == csq;
+}
+
 int n;
-vi a; //val, 
+int length[maxn];
+vector<int> adj[maxn];
 
-// MAXIMUM CARDINALITY BIPARTITE MATCHING
+int match[maxn], visited[maxn];
 
-vi g[160]; //i
-bitset<160> visited;
-vi match;
-
-int Aug(int l) {
-  if (visited[l]) return 0;
-  visited[l] = 1;
-  for (int r : g[l]) {
-    if (match[r] == -1 || Aug(match[r])) {
-      match[r] = l;
-      return 1;
+int augmented_path(int l) {
+    if (visited[l]) return 0;
+    visited[l] = 1;
+    for (int r : adj[l]) {
+        if (match[r] == -1 || augmented_path(match[r])) {
+            match[r] = l;
+//            cout << "matched (" << l << ", " << r << ")\n";
+            return 1;
+        }
     }
-  }
-  return 0;
+    return 0;
 }
 
-void Solve() {
-  cin >> n;
-  a.resize(n);
-  for (int i = 0; i < n; ++i) {
-    cin >> a[i];
-  }
-  sort(all(a));
-  for (int i = 0; i < n; ++i) {
-    for (int j = i+1; j < n; ++j) {
-      if (uslov(a[i], a[j])) {
-        g[i].push_back(j);
-        g[j].push_back(i);
-      }
+void Main() {
+    cin >> n;
+    for (int i = 0; i < n; ++i) {
+        cin >> length[i];
     }
-  }
-  //MCBM
-  int mcbm = 0;
-  match.assign(n, -1);
-  for (int l = 0; l < n; ++l) {
-    visited.reset();
-    mcbm += Aug(l);
-  }
-  cout << mcbm << endl;
-
-
-
-
-
-
-
-
+    for (int i = 0; i < n; ++i) {
+        for (int j = i+1; j < n; ++j) {
+            if (good(length[i], length[j])) {
+                adj[i].push_back(j);
+                adj[j].push_back(i);
+            }
+        }
+    }
+    memset(match, -1, sizeof(match));
+    int matches = 0;
+    for (int l = 0; l < n; ++l) {
+        memset(visited, 0, sizeof(visited));
+        matches += augmented_path(l);
+    }
+    cout << matches << '\n';
 }
- 
+
 int main() {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
-  #ifdef _DEBUG
-  std::freopen("in.txt", "r", stdin);
-  std::freopen("out.txt", "w", stdout);
-  #endif
-  Solve();
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    Main();
 }
-
-
-
-
-
-
-
-
