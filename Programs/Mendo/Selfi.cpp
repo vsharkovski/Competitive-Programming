@@ -34,7 +34,7 @@ void gen(int n, int i, ll x) {
   }
 }
 
-void Solve() {
+int main() {
   memset(refl, -1, sizeof(refl));
   refl[0] = 0;
   refl[1] = 1;
@@ -68,16 +68,4 @@ void Solve() {
   auto it2 = upper_bound(it1, numbers.end(), K);
   cout << distance(it1, it2) << endl;
 
-}
-
-
-
-int main() {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
-  #ifdef _DEBUG
-  std::freopen("in.txt", "r", stdin);
-  std::freopen("out.txt", "w", stdout);
-  #endif
-  Solve();
 }
