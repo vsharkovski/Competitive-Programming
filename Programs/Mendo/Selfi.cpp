@@ -1,12 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define endl '\n'
-#define all(v) begin(v), end(v)
 typedef long long ll;
-typedef long double ld;
-typedef std::pair<int, int> ii;
-typedef std::vector<ii> vii;
-typedef std::vector<int> vi;
 
 
 
