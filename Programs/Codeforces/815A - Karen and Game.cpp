@@ -14,37 +14,33 @@ vector<vector<int>> g;
 vector<pii> seq;
 
 bool do_row(int i) {
-    bool ok = true;
+    int mini = 1e9;
     for (int j = 0; j < m; ++j) {
-        if (g[i][j] == 0) {
-            ok = false;
-            break;
-        }
+        mini = min(mini, g[i][j]);
     }
-    if (ok) {
+    if (mini == 0) return false;
+    for (int c = 0; c < mini; ++c) {
         seq.emplace_back(0, i);
-        for (int j = 0; j < m; ++j) {
-            --g[i][j];
-        }
     }
-    return ok;
+    for (int j = 0; j < m; ++j) {
+        g[i][j] -= mini;
+    }
+    return true;
 }
 
 bool do_col(int j) {
-    bool ok = true;
+    int mini = 1e9;
     for (int i = 0; i < n; ++i) {
-        if (g[i][j] == 0) {
-            ok = false;
-            break;
-        }
+        mini = min(mini, g[i][j]);
     }
-    if (ok) {
+    if (mini == 0) return false;
+    for (int c = 0; c < mini; ++c) {
         seq.emplace_back(1, j);
-        for (int i = 0; i < n; ++i) {
-            --g[i][j];
-        }
     }
-    return ok;
+    for (int i = 0; i < n; ++i) {
+        g[i][j] -= mini;
+    }
+    return true;
 }
 
 int main() {
@@ -61,17 +57,17 @@ int main() {
 
     if (n <= m) {
         for (int i = 0; i < n; ++i) {
-            while (do_row(i)) {}
+            do_row(i);
         }
         for (int j = 0; j < m; ++j) {
-            while (do_col(j)) {}
+            do_col(j);
         }
     } else {
         for (int j = 0; j < m; ++j) {
-            while (do_col(j)) {}
+            do_col(j);
         }
         for (int i = 0; i < n; ++i) {
-            while (do_row(i)) {}
+            do_row(i);
         }
     }
 
