@@ -1,12 +1,5 @@
-/*
-https://szkopul.edu.pl/problemset/problem/Mk-9GNDtSal6h_8T4n9Ezq9M/site/?key=statement
-*/
-
 #include <bits/stdc++.h>
 using namespace std;
-
-typedef long long ll;
-typedef pair<int, int> pii;
 
 const int maxn = 100;
 const int maxd = 51;
@@ -79,7 +72,7 @@ int main() {
             }
             for (int t = 0; t < n; ++t) {
                 forb[d][s][t] = any[d][s][s];
-                for (int k = 0; k <= d; ++k) {
+                for (int k = 0; k < d; ++k) {
                     forb[d][s][t] = subt(forb[d][s][t], mult(forb[k][s][t], any[d-k][s][s]));
                     forb[d][s][t] = subt(forb[d][s][t], mult(good[k][s][t], any[d-k][t][s]));
                 }
