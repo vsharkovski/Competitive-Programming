@@ -17,18 +17,16 @@ void bcc_solve(int fnd1, int fnd2) {
     // fnd1, fnd2: final edge in bcc from stack
     // keep popping from stack until that edge is popped
     // the edges you get are the edges of the bcc
-
-    /*
+    vector<pii> edges;
     while (true) {
-        // stk.back() is an edge in bcc
-        if (stk.back().first == fnd1 && stk.back().second == fnd2) {
-            stk.pop_back();
+        int u = stk.back().first, v = stk.back().second;
+        edges.emplace_back(u, v);
+        stk.pop_back();
+        if (stk.empty() || (u == fnd1 && v == fnd2)) {
             break;
-        } else {
-            stk.pop_back();
         }
     }
-    */
+    // ...
 }
 
 void bcc_dfs(int u, int p) {
