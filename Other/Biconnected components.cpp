@@ -12,7 +12,6 @@ vector<int> adj[maxn];
 int timer;
 int tin[maxn], low[maxn];
 vector<pii> stk;
-vector<int> stk2;
 
 void bcc_solve(int fnd1, int fnd2) {
     // fnd1, fnd2: final edge in bcc from stack
