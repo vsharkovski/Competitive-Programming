@@ -53,7 +53,7 @@ void bcc_dfs(int u, int p) {
             }
         }
     }
-    if (p == -1) {
+    if (p == -1 && !stk.empty()) {
         // all remaining edges in the stack
         // make the final biconnected component
         bcc_solve(-1, -1);
