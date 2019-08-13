@@ -2,9 +2,9 @@
 using namespace std;
 typedef pair<int, int> pii;
 
-const int maxn = 100010;
-
 // see code for articulation points and bridges
+
+const int maxn = 100010;
 
 int n, m;
 vector<int> adj[maxn];
@@ -12,8 +12,27 @@ vector<int> adj[maxn];
 int timer;
 int tin[maxn], low[maxn];
 vector<pii> stk;
+vector<int> stk2;
 
-void bcc(int u, int p) {
+void bcc_solve(int fnd1, int fnd2) {
+    // fnd1, fnd2: final edge in bcc from stack
+    // keep popping from stack until that edge is popped
+    // the edges you get are the edges of the bcc
+
+    /*
+    while (true) {
+        // stk.back() is an edge in bcc
+        if (stk.back().first == fnd1 && stk.back().second == fnd2) {
+            stk.pop_back();
+            break;
+        } else {
+            stk.pop_back();
+        }
+    }
+    */
+}
+
+void bcc_dfs(int u, int p) {
     tin[u] = low[u] = timer++;
     int children = 0;
     for (int v : adj[u]) {
@@ -27,38 +46,22 @@ void bcc(int u, int p) {
         } else {
             ++children;
             stk.emplace_back(u, v);
-            artpb(v, u);
+            bcc_dfs(v, u);
             low[u] = min(low[u], low[v]);
             if (low[v] >= tin[u] && p != -1) {
                 // u is articulation point
                 // all edges after (u, v), inclusive
                 // are part of a biconnected component
-                cout << "BCC: ";
-                while (true) {
-                    cout << stk.back().first << "-" << stk.back().second << " ";
-                    if (stk.back().first == u && stk.back().second == v) {
-                        stk.pop_back();
-                        break;
-                    } else {
-                        stk.pop_back();
-                    }
-                }
-                cout << endl;
+                bcc_solve(u, v);
             }
         }
     }
     if (p == -1) {
-        // all remaining edges in stack
+        // all remaining edges in the stack
         // make the final biconnected component
-        cout << "BCC: ";
-        while (!stk.empty()) {
-            cout << stk.back().first << "-" << stk.back().second << " ";
-            stk.pop_back();
-        }
-        cout << endl;
+        bcc_solve(-1, -1);
     }
 }
-
 
 int main() {
     ios::sync_with_stdio(false); cin.tie(0);
@@ -71,5 +74,5 @@ int main() {
     }
     timer = 0;
     memset(tin, -1, sizeof(tin));
-    bcc(1, -1);
+    bcc_dfs(1, -1);
 }
