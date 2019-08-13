@@ -1,74 +1,56 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
-typedef pair<int, int> pii;
 
+const int maxn = 100010;
 
+int n, m;
+vector<int> adj[maxn];
 
-int n;
-vector<vector<int>> adj;
-
-vector<int> num, low;
-int calls;
-
-vector<int> articulation_point;
-vector<pair<int, int>> articulation_bridges;
+int timer;
+int tin[maxn]; // time entered in dfs
+int low[maxn]; // min{tin[u], tin[p] (u-p is back edge), low[v] (u-v is tree edge)}
 
 void artpb(int u, int p) {
-    num[u] = low[u] = calls++;
+    tin[u] = low[u] = timer++;
     int children = 0;
     for (int v : adj[u]) {
-        if (num[v] == -1) {
+        if (v == p) {
+            // parent
+            continue;
+        } else if (tin[v] != -1) {
+            // back edge
+            low[u] = min(low[u], tin[v]);
+        } else {
+            // tree edge
             ++children;
             artpb(v, u);
-            if (low[v] >= num[u] && p != -1) {
-                articulation_point[u] = 1;
-            }
-            if (low[v] > num[u]) {
-                articulation_bridges.emplace_back(u, v);
-            }
             low[u] = min(low[u], low[v]);
-        } else if (v != p) {
-            low[u] = min(low[u], num[v]);
+            if (low[v] >= tin[u] && p != -1) {
+                // u is articulation point
+                cout << "cut point: " << u << endl;
+            }
+            if (low[v] > tin[u]) {
+                // (u, v) is articulation bridge
+                cout << "bridge: " << u << "-" << v << endl;
+            }
         }
     }
     if (p == -1 && children > 1) {
-        articulation_point[u] = 1;
-    }
-}
-
-void Main() {
-    cin >> n;
-    adj.assign(n+1, vector<int>());
-    int m;
-    cin >> m;
-    while (m--) {
-        int u, v;
-        cin >> u >> v;
-        adj[u].push_back(v);
-        adj[v].push_back(u);
-    }
-    num.assign(n+1, -1);
-    low.assign(n+1, 0);
-    articulation_point.assign(n+1, 0);
-    calls = 0;
-    for (int i = 1; i <= n; ++i) {
-        if (num[i] == -1) {
-            artpb(i, -1);
-        }
-    }
-    for (int i = 1; i <= n; ++i) {
-        if (articulation_point[i]) {
-            cout << "Articulation point: " << i << "\n";
-        }
-    }
-    for (auto& p : articulation_bridges) {
-        cout << "Articulation bridges: " << p.first << " - " << p.second << "\n";
+        // u (root) is also articulation point
+        cout << "cut point: " << u << endl;
     }
 }
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    Main();
+    ios::sync_with_stdio(false); cin.tie(0);
+    cin >> n >> m;
+    for (int i = 0; i < m; ++i) {
+        int a, b;
+        cin >> a >> b;
+        adj[a].push_back(b);
+        adj[b].push_back(a);
+    }
+    timer = 0;
+    memset(tin, -1, sizeof(tin));
+    artpb(1, -1);
 }
