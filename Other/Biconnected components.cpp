@@ -2,9 +2,7 @@
 using namespace std;
 typedef pair<int, int> pii;
 
-// see code for articulation points and bridges
-
-const int maxn = 100010;
+const int maxn = 500010;
 
 int n, m;
 vector<int> adj[maxn];
@@ -13,50 +11,54 @@ int timer;
 int tin[maxn], low[maxn];
 vector<pii> stk;
 
+vector<int> adj2[maxn];
+
 void bcc_solve(int fnd1, int fnd2) {
-    // fnd1, fnd2: final edge in bcc from stack
-    // keep popping from stack until that edge is popped
-    // the edges you get are the edges of the bcc
-    vector<pii> edges;
+    vector<int> nodes;
+    cout << "BCC: ";
     while (true) {
         int u = stk.back().first, v = stk.back().second;
-        edges.emplace_back(u, v);
+        cout << u << "-" << v << " ";
+        nodes.push_back(u);
+        nodes.push_back(v);
+        adj2[u].push_back(v);
+        adj2[v].push_back(u);
         stk.pop_back();
         if (stk.empty() || (u == fnd1 && v == fnd2)) {
             break;
         }
     }
+    cout << endl;
+    // do stuff
+    // note: "nodes" have duplicates
     // ...
+    while (!nodes.empty()) {
+        adj2[nodes.back()].clear();
+        nodes.pop_back();
+    }
 }
 
 void bcc_dfs(int u, int p) {
     tin[u] = low[u] = timer++;
     int children = 0;
     for (int v : adj[u]) {
-        if (v == p) {
-            continue;
-        } else if (tin[v] != -1) {
-            low[u] = min(low[u], tin[v]);
-            if (tin[v] < tin[u]) {
-                stk.emplace_back(u, v);
-            }
-        } else {
+        if (tin[v] == -1) {
+            // tree edge
             ++children;
             stk.emplace_back(u, v);
             bcc_dfs(v, u);
             low[u] = min(low[u], low[v]);
-            if (low[v] >= tin[u] && p != -1) {
-                // u is articulation point
-                // all edges after (u, v), inclusive
-                // are part of a biconnected component
+            if (low[v] >= tin[u]) {
                 bcc_solve(u, v);
             }
+        } else if (v != p) {
+            // back edge
+            // low[u] = min(low[u], tin[v]);
+            if (tin[v] < low[u]) {
+                low[u] = tin[v];
+                stk.emplace_back(u, v);
+            }
         }
-    }
-    if (p == -1 && !stk.empty()) {
-        // all remaining edges in the stack
-        // make the final biconnected component
-        bcc_solve(-1, -1);
     }
 }
 
@@ -69,7 +71,6 @@ int main() {
         adj[a].push_back(b);
         adj[b].push_back(a);
     }
-    timer = 0;
     memset(tin, -1, sizeof(tin));
     bcc_dfs(1, -1);
 }
