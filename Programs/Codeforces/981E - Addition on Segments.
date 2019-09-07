@@ -1,0 +1,81 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void __print(int x) {cerr << x;}
+void __print(long x) {cerr << x;}
+void __print(long long x) {cerr << x;}
+void __print(unsigned x) {cerr << x;}
+void __print(unsigned long x) {cerr << x;}
+void __print(unsigned long long x) {cerr << x;}
+void __print(float x) {cerr << x;}
+void __print(double x) {cerr << x;}
+void __print(long double x) {cerr << x;}
+void __print(char x) {cerr << '\'' << x << '\'';}
+void __print(const char *x) {cerr << '\"' << x << '\"';}
+void __print(const string &x) {cerr << '\"' << x << '\"';}
+void __print(bool x) {cerr << (x ? "true" : "false");}
+
+template<typename T, typename V>
+void __print(const pair<T, V> &x) {cerr << '{'; __print(x.first); cerr << ','; __print(x.second); cerr << '}';}
+template<typename T>
+void __print(const T &x) {int f = 0; cerr << '{'; for (auto &i: x) cerr << (f++ ? "," : ""), __print(i); cerr << "}";}
+void _print() {cerr << "]\n";}
+template <typename T, typename... V>
+void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v...);}
+#ifndef ONLINE_JUDGE
+#define debug(x...) cerr << "[" << #x << "] = ["; _print(x)
+#else
+#define debug(x...)
+#endif
+
+typedef long long ll;
+typedef pair<int, int> pii;
+
+const int maxn = 10001;
+typedef bitset<maxn> BS;
+
+int n, q;
+BS ans;
+vector<int> tree[4*maxn];
+
+void add(int v, int tl, int tr, int l, int r, int x) {
+    if (l > r) return;
+    if (l <= tl && tr <= r) {
+        tree[v].push_back(x);
+    } else {
+        int tm = (tl + tr) / 2;
+        add(2*v, tl, tm, l, min(r, tm), x);
+        add(2*v+1, tm+1, tr, max(l, tm+1), r, x);
+    }
+}
+
+void traverse(int v, int tl, int tr, BS dp) {
+    for (int x : tree[v]) {
+        dp |= (dp << x);
+    }
+    if (tl == tr) {
+        ans |= dp;
+    } else {
+        int tm = (tl + tr) / 2;
+        traverse(2*v, tl, tm, dp);
+        traverse(2*v+1, tm+1, tr, dp);
+    }
+}
+
+int main() {
+    ios::sync_with_stdio(false); cin.tie(0);
+    cin >> n >> q;
+    while (q--) {
+        int l, r, x;
+        cin >> l >> r >> x;
+        add(1, 1, n, l, r, x);
+    }
+    ans[0] = 1;
+    traverse(1, 1, n, ans);
+    vector<int> ans2;
+    for (int i = 1; i <= n; ++i) {
+        if (ans[i]) ans2.push_back(i);
+    }
+    cout << ans2.size() << endl;
+    for (int x : ans2) cout << x << ' ';
+}
