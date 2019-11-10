@@ -23,8 +23,10 @@ int origin[N]; // group this compressed number is in
 int adj[N];
 
 int source[1<<K]; // the node this mask starts from
-int dp[1<<K]; // A = m, does A exist? or A|B = m, A&B = 0, do A and B exist?
-int pre[1<<K]; // the submask A
+int dp[1<<K];
+// dp[m] = m if m exists
+// or dp[m] = g, such that g exists and m^g exists
+// or dp[m] = 0
 
 const int unvisited = 0, explored = 1, visited = 2;
 int status[N];
@@ -36,7 +38,6 @@ void dfs(int u) {
 		if (status[v] == unvisited) {
 			dfs(v);
 		} else if (status[v] == explored) {
-			// cycle
 			int mask = 0;
 			int w = u;
 			// cout << "cycle: ";
@@ -54,8 +55,7 @@ void dfs(int u) {
 			} else {
 				// cout << " mask=" << bitset<K>(mask) << endl;
 				source[mask] = u;
-				dp[mask] = 1;
-				pre[mask] = 0;
+				dp[mask] = mask;
 			}
 		}
 	}
@@ -110,7 +110,6 @@ int main() {
 	// }
 	for (int m = 0; m < (1 << K); ++m) {
 		dp[m] = 0;
-		pre[m] = 0;
 	}
 	for (int i = 0; i < n; ++i) {
 		status[i] = unvisited;
@@ -124,8 +123,7 @@ int main() {
 		if (dp[m]) continue;
 		for (int g = m-1; g > 0; g = (g - 1) & m) {
 			if (dp[g] && dp[m ^ g]) {
-				dp[m] = 1;
-				pre[m] = g;
+				dp[m] = g;
 				break;
 			}
 		}
@@ -142,9 +140,9 @@ int main() {
 	while (!masks.empty()) {
 		int m = masks.front();
 		masks.pop();
-		if (pre[m] != 0) {
-			masks.push(pre[m]);
-			masks.push(m ^ pre[m]);
+		if (dp[m] != m) {
+			masks.push(dp[m]);
+			masks.push(m ^ dp[m]);
 		} else {
 			int u = source[m];
 			int w = u;
