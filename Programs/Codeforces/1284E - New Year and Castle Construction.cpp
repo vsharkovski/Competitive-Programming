@@ -37,21 +37,18 @@ int main() {
 	for (int i = 0; i < n; ++i) {
 		cin >> x[i] >> y[i];
 	}
-	ll ans = n * CHS(n-1, 4); // all combinations, will subtract bad ones
+	ll ans = n * CHS(n-1, 4);
 	for (int i = 0; i < n; ++i) {
 		vector<pii> points;
 		for (int j = 0; j < n; ++j) {
 			if (j == i) continue;
 			points.emplace_back(x[j]-x[i], y[j]-y[i]);
 		}
+		// sort counter-clockwise
 		sort(points.begin(), points.end(), [&](const pii& a, const pii& b) {
-			int aUp = (a.second > 0) || (a.second == 0 && a.first > 0);
-			int bUp = (b.second > 0) || (b.second == 0 && b.first > 0);
-			if (aUp && !bUp) return true;
-			if (!aUp && bUp) return false;
-			ll vp = prod(a, b);
-			if (vp > 0) return true;
-			return false;
+    		int aUp = (a.second > 0) || (a.second == 0 && a.first > 0);
+    		int bUp = (b.second > 0) || (b.second == 0 && b.first > 0);
+   			return aUp == bUp ? prod(a, b) > 0 : aUp < bUp;
 		});
 		points.resize(2*(n-1));
 		for (int i = 0; i < n-1; ++i) {
