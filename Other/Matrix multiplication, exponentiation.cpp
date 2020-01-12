@@ -66,3 +66,44 @@ void matpow(matrix& a, matrix& res_real, int pwr) {
 	}
 	res_real = res;
 }
+
+/////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+
+const int mod = 1e9 + 7;
+const int M = 100;
+
+inline void add(int &a, int b) {
+	a += b;
+	if (a >= mod) a -= mod;
+}
+
+inline int mul(int a, int b) {
+	return (ll)a * b % mod;
+}
+
+struct matrix {
+	int m[M][M];
+};
+
+matrix matmul(matrix a, matrix b) {
+	matrix res;
+	memset(res.m, 0, sizeof(res.m));
+	for (int i = 0; i < M; ++i)
+		for (int k = 0; k < M; ++k)
+			for (int j = 0; j < M; ++j)
+				add(res.m[i][j], mul(a.m[i][k], b.m[k][j]));
+	return res;
+}
+
+void matpow(matrix a, int pwr) {
+	matrix res;
+	for (int i = 0; i < m; ++i)
+		res.m[i][i] = 1;
+	while (pwr > 0) {
+		if (pwr & 1) res = matmul(res, a);
+		a = matmul(a, a);
+		pwr /= 2;
+	}
+	res_real = res;
+}
