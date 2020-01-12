@@ -96,7 +96,7 @@ matrix matmul(matrix a, matrix b) {
 	return res;
 }
 
-void matpow(matrix a, int pwr) {
+matrix matpow(matrix a, int pwr) {
 	matrix res;
 	for (int i = 0; i < m; ++i)
 		res.m[i][i] = 1;
