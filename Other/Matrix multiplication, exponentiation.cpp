@@ -105,5 +105,5 @@ matrix matpow(matrix a, int pwr) {
 		a = matmul(a, a);
 		pwr /= 2;
 	}
-	res_real = res;
+    return res;
 }
