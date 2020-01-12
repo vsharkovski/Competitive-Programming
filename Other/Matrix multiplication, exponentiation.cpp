@@ -98,7 +98,7 @@ matrix matmul(matrix a, matrix b) {
 
 matrix matpow(matrix a, int pwr) {
 	matrix res;
-	for (int i = 0; i < m; ++i)
+	for (int i = 0; i < M; ++i)
 		res.m[i][i] = 1;
 	while (pwr > 0) {
 		if (pwr & 1) res = matmul(res, a);
