@@ -84,6 +84,9 @@ inline int mul(int a, int b) {
 
 struct matrix {
 	int m[M][M];
+	matrix() {
+		memset(m, 0, sizeof(m));
+	}
 };
 
 matrix matmul(matrix a, matrix b) {
