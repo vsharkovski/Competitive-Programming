@@ -32,6 +32,7 @@ pii possible(int limit) {
 		if (j != -1) {
 			return pii(i, j);
 		}
+		if (had[msk] != -1) continue;
 		//cout << "msk=" << bitset<M>(msk) << endl; 
 		for (int s = msk; s > 0; s = (s-1) & msk) {
 			had[s] = i;
