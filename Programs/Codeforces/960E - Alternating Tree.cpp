@@ -23,11 +23,6 @@ inline int mult(int x, int y) {
 	return (ll)x * y % mod;
 }
 
-inline int F(int x) {
-	if (x > 1000) x -= mod;
-	return x;
-}
-
 const int N = 200010;
 
 int n, ans;
@@ -41,7 +36,6 @@ int totalsum, numpaths;
 
 pii getsums(int u, int p, int d, int sum) {
 	sum = add(sum, V[u] * (d ? -1 : 1));
-	//cout << "u=" << u << " sumtohere="<<F(sum)<<endl;
 	pii res(sum, 1);
 	for (int v : adj[u]) {
 		if (v == p || removed[v]) continue;
@@ -55,7 +49,6 @@ pii getsums(int u, int p, int d, int sum) {
 void dfs(int u, int p, int d, int sum) {
 	sum = add(mod, -sum);
 	sum = add(sum, V[u]);
-	//cout << "u="<<u<<" sum="<<sum<< " d="<<d<<endl;
 	if (d == 0) {
 		ans = add(ans, mult(numpaths, sum));
 		ans = add(ans, totalsum);
@@ -70,7 +63,6 @@ void dfs(int u, int p, int d, int sum) {
 }
 
 void solve_rooted(int root) {
-	//cout << "root=" << root << endl;
 	totalsum = V[root];
 	numpaths = 1;
 	vector<pii> data;
@@ -82,13 +74,11 @@ void solve_rooted(int root) {
 		data.push_back(res);
 	}
 	ans = add(ans, totalsum); // root -> descendant
-	//cout << "totalsum="<<F(totalsum) << " numpaths="<<numpaths<<endl;
 	int i = 0;
 	for (int v : adj[root]) {
 		if (removed[v]) continue;
 		totalsum = add(totalsum, -data[i].first);
 		numpaths = add(numpaths, -data[i].second);
-		//cout << "v="<<v<<" ts="<<F(totalsum)<< " np="<<numpaths<<endl;
 		dfs(v, root, 1, 0);
 		totalsum = add(totalsum, data[i].first);
 		numpaths = add(numpaths, data[i].second);
