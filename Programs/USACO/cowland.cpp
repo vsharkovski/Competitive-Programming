@@ -116,7 +116,7 @@ int findcentroid(int u, int p, int m) {
 			return findcentroid(v, u, m);
 	return u;
 }
-int decompose(int u, int p) {
+void decompose(int u, int p) {
 	getsbsz(u, -1);
 	int c = findcentroid(u, -1, sbsz[u]);
 	//
@@ -132,7 +132,6 @@ int decompose(int u, int p) {
 		decompose(v, c);
 	}
 	removed[c] = false;
-	return c;
 }
 
 int main() {
@@ -201,6 +200,5 @@ int main() {
 			}
 			cout << res << '\n';
 		}
-		//if (qi == 1) break;
 	}
 }
