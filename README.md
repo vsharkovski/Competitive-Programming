@@ -1,3 +1,3 @@
 # Competitive-Programming
 
-My solutions to some competitive programming problems.
+My solutions for some competitive programming problems.
