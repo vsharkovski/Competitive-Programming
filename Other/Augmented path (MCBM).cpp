@@ -1,33 +1,35 @@
 // Maximum cardinality biparite matching
-// n: size of left set
-// m: size of right set
+#include <bits/stdc++.h>
+using namespace std;
 
-int n, m;
-vector<int> match;
-vector<bool> visited;
+int n, m; // size of left, size of right set
+vector<vector<int>> adj; // L -> R
+vector<int> match; // for each in R
+vector<bool> visited; // for each in L
 
-bool augmented_path(int L) {
-    if (visited[L]) return false;
-    visited[L] = true;
-    for (int R = 0; R < m; ++R) {
-        if (blocked[L][R]) continue;
-        if (match[R] == -1 || augmented_path(match[R])) {
-            match[R] = L;
-            return true;
-        }
-    }
-    return false;
+bool augmented_path(int l) {
+	if (visited[l]) return false;
+	visited[l] = true;
+	for (int r : adj[l]) {
+		if (match[r] == -1 || augmented_path(match[r])) {
+			match[r] = l;
+			return true;
+		}
+	}
+	return false;
 }
 
-int bipartite() {
-    match.assign(m, -1);
-    int cnt = 0;
-    for (int L = 0; L < n; ++L) {
-        visited.assign(n, false);
-        if (augmented_path(L)) {
-            // successfully matched
-            ++cnt;
-        }
-    }
-    return cnt;
+int main() {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	// read the graph, make adjacency list
+	match.assign(m, -1);
+	int matches = 0;
+	for (int l = 0; l < n; ++l) {
+		visited.assign(n, false);
+		if (augmented_path(l)) {
+			++matches;
+		}
+	}
+	cout << matches << '\n';
 }
