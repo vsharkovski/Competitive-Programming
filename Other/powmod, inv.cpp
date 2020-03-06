@@ -1,28 +1,24 @@
-typedef long long ll;
-const ll mod = 1e9 + 7;
-
-
-// fast modular exponentiation
-
-ll powmod(ll a, ll b) {
-  ll res = 1;
-  a %= mod;
-  while (b > 0) {
-    if (b & 1) res = (res * a) % mod;
-    a = (a * a) % mod;
-    b >>= 1;
-  }
-  return res;
+inline int add(int x, int y) {
+	x += y;
+	if (x >= mod) x -= mod;
+	if (x < 0) x += mod;
+	return x;
 }
 
-
-// modular multiplicative inverse
-// gcd(a, M) = 1 necessary
-// a ^ (phi(M) - 1) = 1 (mod M) ;; phi is Euler totient function
-// if M is prime, phi(M) = M-1
-// ==> a ^ (M - 2) = 1 (mod M)
-
-ll inv(ll a) {
-  return powmod(a, mod - 2);
+inline int mult(int x, int y) {
+	return (long long)x * y % mod;
 }
 
+int power(int a, int b) {
+	int res = 1;
+	while (b) {
+		if (b & 1) res = mult(res, a);
+		a = mult(a, a);
+		b /= 2;
+	}
+	return res;
+}
+
+int modular_inverse(int a) {
+	return power(a, mod-2); // mod is prime
+}
