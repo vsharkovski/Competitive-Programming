@@ -1,42 +1,44 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const int N = 100100;
+const int N = 100010;
 
 int n, m;
 vector<int> adj[N];
 
 int timer;
-int tin[N]; // time entered with dfs
-int low[N]; // min{tin[u], tin[p] (u-p is back edge), low[v] (u-v is tree edge)}
+int tin[N];
+int low[N];
 
-void dfs(int node, int parent) {
-	tin[node] = low[node] = timer++;
-	int children = 0;
-	for (int v : adj[node]) {
-		if (tin[v] == -1) {
-			++children;
-			dfs(v, node);
-			low[node] = min(low[node], low[v]);
-			if (low[v] > num[node]) {
-				// this edge is bridge
-			}
-			if (parent != -1 && low[v] >= num[node]) {
-				// node is cut point
-			}
-		} else if (v != parent) {
-			// back edge
-			low[node] = min(low[node], tin[v]);
-		}
-	}
-	if (parent == -1 && children > 1) {
-		// node is cut point
-	}
+void dfs(int u, int p) {
+    tin[u] = low[u] = timer++;
+    int children = 0;
+    for (int v : adj[u]) {
+        if (v == p) continue;
+        if (tin[v] != -1) {
+            // back edge
+            low[u] = min(low[u], tin[v]);
+        } else {
+            ++children;
+            dfs(v, u);
+            low[u] = min(low[u], low[v]);
+            if (low[v] > tin[u]) {
+                // u-v is bridge
+                cout << "bridge: " << u << " - " << v << "\n";
+            }
+            if (p != -1 && low[v] >= tin[u]) {
+                // u is cut node
+                cout << "cut node: " << u << "\n";
+            }
+        }
+    }
+    if (p == -1 && children >= 2) {
+        // u is root and cut node
+        cout << "cut node (root): " << u << "\n";
+    }
 }
 
 int main() {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
 	cin >> n >> m;
 	for (int i = 0; i < m; ++i) {
 		int a, b;
@@ -44,13 +46,9 @@ int main() {
 		adj[a].push_back(b);
 		adj[b].push_back(a);
 	}
-	for (int i = 1; i <= n; ++i) {
-		tin[i] = -1;
-	}
 	timer = 0;
 	for (int i = 1; i <= n; ++i) {
-		if (tin[i] == -1) {
-			dfs(i, -1);
-		}
+        tin[i] = -1;
 	}
+	dfs(1, -1);
 }
