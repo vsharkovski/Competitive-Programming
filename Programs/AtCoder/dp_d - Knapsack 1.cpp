@@ -1,51 +1,27 @@
 #include <bits/stdc++.h>
-#include <ext/pb_ds/tree_policy.hpp>
-#include <ext/pb_ds/assoc_container.hpp>
 using namespace std;
-//using namespace __gnu_pbds;
 typedef long long ll;
-typedef pair<int, int> pi;
-typedef vector<int> vi;
-template <class Key, class Compare = less<Key>>
-using Tree = __gnu_pbds::tree<Key, __gnu_pbds::null_type, Compare, __gnu_pbds::rb_tree_tag, __gnu_pbds::tree_order_statistics_node_update>;
-
-
-
-int N, W;
-int w[100], v[100];
-static ll dp[101][100001];
-
-ll dfs(int i, int wrem) {
-  ll& res = dp[i][wrem];
-  if (res != -1) {
-    return res;
-  }
-  res = 0;
-  if (i < N) {
-    res = max(res, dfs(i+1, wrem));
-    if (w[i] <= wrem) {
-      res = max(res, v[i] + dfs(i+1, wrem-w[i]));
-    }
-  }
-  return res;
-}
-
-void Main() {
-  cin >> N >> W;
-  for (int i = 0; i < N; ++i) {
-    cin >> w[i] >> v[i];
-  }
-  memset(dp, -1, sizeof(dp));
-  cout << dfs(0, W) << '\n';
-}
+typedef pair<int, int> pii;
 
 int main() {
-  ios::sync_with_stdio(false);
-//  cin.tie(nullptr);
-  #ifdef _DEBUG
-//  freopen("in.txt", "r", stdin);
-//  freopen("out.txt", "w", stdout);
-  #endif
-  Main();
-  return 0;
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	const ll inf = 1e9;
+	int n, maxw;
+	cin >> n >> maxw;
+	vector<ll> dp(maxw+1, -inf);
+	dp[0] = 0;
+	for (int i = 0; i < n; ++i) {
+		int wi;
+		ll vi;
+		cin >> wi >> vi;
+		for (int sumw = maxw-wi; sumw >= 0; --sumw) {
+			dp[sumw+wi] = max(dp[sumw+wi], dp[sumw] + vi);
+		}
+	}
+	ll ans = 0;
+	for (int sumw = 0; sumw <= maxw; ++sumw) {
+		ans = max(ans, dp[sumw]);
+	}
+	cout << ans << '\n';
 }
