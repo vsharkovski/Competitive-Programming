@@ -1,56 +1,36 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-typedef pair<int, int> pi;
-typedef vector<int> vi;
+typedef pair<int, int> pii;
 
-
-
-
-
-int N;
-ll a[405];
-ll prefsum[405];
-ll dp[405][405]; // dp[L][R] = {minimum cost for segment [L, R]
-
-ll dfs(int L, int R) {
-    ll& res = dp[L][R];
-    if (res == -1) {
-        if (L >= R) {
-            res = 0;
-        } else if (L+1 == R) {
-            res = a[L] + a[L+1];
-        } else {
-            res = 1e18;
-            for (int i = L; i+1 <= R; ++i) {
-                ll leftcost = dfs(L, i);
-                ll leftsize = prefsum[i] - prefsum[L-1];
-                ll rightcost = dfs(i+1, R);
-                ll rightsize = prefsum[R] - prefsum[i];
-                ll totalcost = leftcost + rightcost + (leftsize + rightsize);
-                res = min(res, totalcost);
-            }
-        }
-    }
-    return res;
-}
-
-void Main() {
-    cin >> N;
-    for (int i = 1; i <= N; ++i) {
-        cin >> a[i];
-    }
-    prefsum[0] = 0;
-    for (int i = 1; i <= N; ++i) {
-        prefsum[i] = prefsum[i-1] + a[i];
-    }
-    memset(dp, -1, sizeof(dp));
-    ll ans = dfs(1, N);
-    cout << ans << '\n';
-}
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    Main();
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	const ll inf = 1e18;
+	const int N = 410;
+	int n;
+	ll a[N];
+	ll pref[N];
+	ll dp[N][N];
+	cin >> n;
+	for (int i = 0; i < n; ++i) {
+		cin >> a[i];
+		pref[i] = a[i];
+		if (i) pref[i] += pref[i-1];
+		dp[i][i] = 0;
+	}
+	for (int d = 1; d < n; ++d) {
+		for (int i = 0; i+d < n; ++i) {
+			int j = i+d;
+			ll sum = pref[j];
+			if (i) sum -= pref[i-1];
+			dp[i][j] = inf;
+			for (int k = i; k < j; ++k) {
+				dp[i][j] = min(dp[i][j], dp[i][k] + dp[k+1][j] + sum);
+			}
+			//cout << "dp["<<i<<","<<j<<"]="<<dp[i][j]<<'\n';
+		}
+	}
+	cout << dp[0][n-1] << '\n';
 }
