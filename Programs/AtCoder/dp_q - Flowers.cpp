@@ -1,62 +1,56 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-typedef pair<int, int> pi;
-typedef vector<int> vi;
+typedef pair<int, int> pii;
 
+const int N = 200100;
 
+int n;
+int h1[N];
+ll tree[1<<19];
 
-
-
-
-int M;
-vector<ll> h, a;
-
-int N;
-vector<ll> dp, tree;
-
-void update(int k, ll x) {
-    k += N;
-    tree[k] = x;
-    for (k /= 2; k >= 1; k /= 2) {
-        tree[k] = max(tree[2*k], tree[2*k+1]);
-    }
+ll getmax(int v, int tl, int tr, int l, int r) {
+	if (l > r) return 0;
+	if (l <= tl && tr <= r) return tree[v];
+	int tm = (tl + tr) / 2;
+	return max(	getmax(2*v, tl, tm, l, min(r, tm)),
+				getmax(2*v+1, tm+1, tr, max(l, tm+1), r));
 }
 
-ll query(int a, int b, int k, int x, int y) {
-    if (b < x || a > y) return 0;
-    if (a <= x && y <= b) return tree[k];
-    int d = (x + y) / 2;
-    return max(query(a, b, 2*k, x, d), query(a, b, 2*k+1, d+1, y));
-}
-
-void Main() {
-    cin >> M;
-    h.resize(M);
-    a.resize(M);
-    for (int i = 0; i < M; ++i) {
-        cin >> h[i];
-        --h[i];
-    }
-    for (int i = 0; i < M; ++i) {
-        cin >> a[i];
-    }
-    N = 1;
-    while (N < M) N *= 2;
-    tree.assign(2*N, 0);
-    dp.assign(M, 0);
-    ll ans = 0;
-    // dp[i] = a[i] + max(dp[j]) for every j < i, h[j] < h[i]
-    for (int i = 0; i < M; ++i) {
-        dp[i] = a[i] + query(0, h[i] - 1, 1, 0, N-1);
-        ans = max(ans, dp[i]);
-        update(h[i], dp[i]);
-    }
-    cout << ans << '\n';
+void update(int v, int tl, int tr, int pos, ll val) {
+	if (tl == tr) {
+		tree[v] = max(tree[v], val);
+		return;
+	}
+	int tm = (tl + tr) / 2;
+	if (pos <= tm) {
+		update(2*v, tl, tm, pos, val);
+	} else {
+		update(2*v+1, tm+1, tr, pos, val);
+	}
+	tree[v] = max(tree[2*v], tree[2*v+1]);
 }
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    Main();
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n;
+	vector<int> h2(n);
+	for (int i = 0; i < n; ++i) {
+		cin >> h1[i];
+		h2[i] = h1[i];
+	}
+	sort(h2.begin(), h2.end());
+	h2.erase(unique(h2.begin(), h2.end()), h2.end());
+	memset(tree, 0, sizeof(tree));
+	ll ans = 0;
+	for (int i = 0; i < n; ++i) {
+		ll a;
+		cin >> a;
+		int h = lower_bound(h2.begin(), h2.end(), h1[i]) - h2.begin();
+		ll res = a + getmax(1, 0, n-1, 0, h-1);
+		update(1, 0, n-1, h, res);
+		ans = max(ans, res);
+	}
+	cout << ans << '\n';
 }
