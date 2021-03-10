@@ -1,59 +1,34 @@
 #include <bits/stdc++.h>
-#include <ext/pb_ds/tree_policy.hpp>
-#include <ext/pb_ds/assoc_container.hpp>
 using namespace std;
-//using namespace __gnu_pbds;
 typedef long long ll;
-typedef pair<int, int> pi;
-typedef vector<int> vi;
-template <class Key, class Compare = less<Key>>
-using Tree = __gnu_pbds::tree<Key, __gnu_pbds::null_type, Compare, __gnu_pbds::rb_tree_tag, __gnu_pbds::tree_order_statistics_node_update>;
+typedef pair<int, int> pii;
 
+const int mod = 1e9 + 7;
 
-
-const ll mod = 1e9 + 7;
-
-int n;
-bool a[22][22];
-ll dp[22][(1<<21)+1];
-
-ll dfs(int i, int m) {
-  ll& res = dp[i][m];
-  if (res != -1) {
-    return res;
-  }
-  if (i == n) {
-    return res = 1;
-  }
-  res = 0;
-  for (int j = 0; j < n; ++j) {
-    if (a[i][j] && !(m & (1 << j))) {
-      res += dfs(i+1, m | (1 << j));
-      res %= mod;
-    }
-  }
-  return res;
-}
-
-void Main() {
-  cin >> n;
-  for (int i = 0; i < n; ++i) {
-    for (int j = 0; j < n; ++j) {
-      cin >> a[i][j];
-    }
-  }
-  memset(dp, -1, sizeof(dp));
-  ll ans = dfs(0, 0);
-  cout << ans << '\n';
+inline void add_self(int& x, int y) {
+	x += y;
+	if (x >= mod) x -= mod;
 }
 
 int main() {
-  ios::sync_with_stdio(false);
-//  cin.tie(nullptr);
-  #ifdef _DEBUG
-//  freopen("in.txt", "r", stdin);
-//  freopen("out.txt", "w", stdout);
-  #endif
-  Main();
-  return 0;
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	int n;
+	cin >> n;
+	vector<int> cur(1<<n), nxt(1<<n);
+	cur[0] = 1;
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < n; ++j) {
+			int can;
+			cin >> can;
+			if (can == 0) continue;
+			for (int mask = 0; mask < (1<<n); ++mask) {
+				if (mask & (1<<j)) continue;
+				add_self(nxt[mask | (1<<j)], cur[mask]);
+			}
+		}
+		swap(cur, nxt);
+		nxt.assign(1<<n, 0);
+	}
+	cout << cur[(1<<n) - 1] << '\n';
 }
