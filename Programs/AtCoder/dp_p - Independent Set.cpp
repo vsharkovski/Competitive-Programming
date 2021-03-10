@@ -1,58 +1,47 @@
 #include <bits/stdc++.h>
-#include <ext/pb_ds/tree_policy.hpp>
-#include <ext/pb_ds/assoc_container.hpp>
 using namespace std;
-//using namespace __gnu_pbds;
 typedef long long ll;
-typedef pair<int, int> pi;
-typedef vector<int> vi;
-template <class Key, class Compare = less<Key>>
-using Tree = __gnu_pbds::tree<Key, __gnu_pbds::null_type, Compare, __gnu_pbds::rb_tree_tag, __gnu_pbds::tree_order_statistics_node_update>;
+typedef pair<int, int> pii;
 
+const int mod = 1e9 + 7;
 
-
-typedef pair<ll, ll> pl;
-const ll mod = 1e9 + 7;
-
-int V;
-vector<int> G[100000];
-
-pl dfs(int u, int p) {
-  ll w = 1, b = 1;
-  for (int v : G[u]) {
-    if (v != p) {
-      pl res = dfs(v, u);
-      w *= (res.first + res.second) % mod;
-      w %= mod;
-      b *= res.first;
-      b %= mod;
-    }
-  }
-//  cout << "u=" << u << " w=" << w << " b=" << b << '\n';
-  return pl(w, b);
+inline int add(int a, int b) {
+	a += b;
+	if (a >= mod) a -= mod;
+	return a;
 }
 
-void Main() {
-  cin >> V;
-  for (int i = 0; i < V-1; ++i) {
-    int x, y;
-    cin >> x >> y;
-    --x, --y;
-    G[x].push_back(y);
-    G[y].push_back(x);
-  }
-  pl res = dfs(0, -1);
-  ll ans = (res.first + res.second) % mod;
-  cout << ans << '\n';
+inline int mult(int a, int b) {
+	return (ll)a * b % mod;
+}
+
+const int N = 1e5 + 10;
+
+int n;
+vector<int> adj[N];
+int dp[N][2]; // dp[u][u_color]
+
+void dfs(int u, int p) {
+	dp[u][1] = 1;
+	dp[u][0] = 1;
+	for (int v : adj[u]) {
+		if (v == p) continue;
+		dfs(v, u);
+		dp[u][1] = mult(dp[u][1], dp[v][0]);
+		dp[u][0] = mult(dp[u][0], add(dp[v][0], dp[v][1]));
+	}
 }
 
 int main() {
-  ios::sync_with_stdio(false);
-//  cin.tie(nullptr);
-  #ifdef _DEBUG
-//  freopen("in.txt", "r", stdin);
-//  freopen("out.txt", "w", stdout);
-  #endif
-  Main();
-  return 0;
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n;
+	for (int i = 0; i < n-1; ++i) {
+		int a, b;
+		cin >> a >> b;
+		adj[a].push_back(b);
+		adj[b].push_back(a);
+	}
+	dfs(1, -1);
+	cout << add(dp[1][0], dp[1][1]) << '\n';
 }
