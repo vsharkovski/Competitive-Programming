@@ -1,0 +1,107 @@
+
+// Problem : E. World of Darkraft: Battle for Azathoth
+// Contest : Codeforces Round #625 (Div. 2, based on Technocup 2020 Final Round)
+// URL : https://codeforces.com/contest/1321/problem/E
+// Memory Limit : 512 MB
+// Time Limit : 2000 ms
+// Powered by CP Editor (https://github.com/cpeditor/cpeditor)
+
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+typedef pair<int, int> pii;
+
+const ll inf = 1e18;
+const int N = 200100;
+const int BASE = 1<<18;
+
+int n, m, p;
+pii weapons[N];
+pii armors[N];
+pair<pii, int> monsters[N];
+
+struct segtree {
+	ll tree[2*BASE];
+	ll lazy[2*BASE];
+	void build(int v, int tl, int tr) {
+		lazy[v] = 0;
+		if (tl == tr) {
+			tree[v] = -armors[tl].second;
+			return;
+		}
+		int tm = (tl + tr) / 2;
+		build(2*v, tl, tm);
+		build(2*v+1, tm+1, tr);
+		tree[v] = max(tree[2*v], tree[2*v+1]);
+	}
+	inline void push(int v) {
+		tree[2*v] += lazy[v];
+		lazy[2*v] += lazy[v];
+		tree[2*v+1] += lazy[v];
+		lazy[2*v+1] += lazy[v];
+		lazy[v] = 0;
+	}
+	void update(int v, int tl, int tr, int l, int r, ll val) {
+		if (l > r) return;
+		if (l == tl && tr == r) {
+			tree[v] += val;
+			lazy[v] += val;
+			return;
+		}
+		push(v);
+		int tm = (tl + tr) / 2;
+		update(2*v, tl, tm, l, min(r, tm), val);
+		update(2*v+1, tm+1, tr, max(l, tm+1), r, val);
+		tree[v] = max(tree[2*v], tree[2*v+1]);
+	}
+	ll query(int v, int tl, int tr, int l, int r) {
+		if (l > r) return -inf;
+		if (l <= tl && tr <= r) return tree[v];
+		push(v);
+		int tm = (tl + tr) / 2;
+		return	max(query(2*v, tl, tm, l, min(r, tm)),
+					query(2*v+1, tm+1, tr, max(l, tm+1), r));
+	}
+} armortree;
+
+int main() {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m >> p;
+	for (int i = 0; i < n; ++i) {
+		cin >> weapons[i].first >> weapons[i].second;
+	}
+	for (int i = 0; i < m; ++i) {
+		cin >> armors[i].first >> armors[i].second;
+	}
+	for (int i = 0; i < p; ++i) {
+		cin >> monsters[i].first.first >> monsters[i].first.second >> monsters[i].second;
+	}
+	sort(weapons, weapons+n);
+	sort(armors, armors+m);
+	sort(monsters, monsters+p);
+	armortree.build(1, 0, m-1);
+	ll ans = -inf;
+	int j = 0;
+	for (int i = 0; i < n; ++i) {
+		while (j < p && monsters[j].first.first < weapons[i].first) {
+			int pos = -1;
+			int lo = 0, hi = m-1, mid;
+			while (lo <= hi) {
+				mid = (lo + hi) / 2;
+				if (armors[mid].first > monsters[j].first.second) {
+					pos = mid;
+					hi = mid-1;
+				} else {
+					lo = mid+1;
+				}
+			}
+			if (pos != -1) {
+				armortree.update(1, 0, m-1, pos, m-1, monsters[j].second);
+			}
+			++j;
+		}
+		ans = max(ans, -weapons[i].second + armortree.tree[1]);
+    }
+    cout << ans << '\n';
+}
