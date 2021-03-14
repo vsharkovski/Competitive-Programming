@@ -5,7 +5,7 @@ struct DSU {
 		rank.assign(n, 0);
 		p.resize(n);
 		iota(p.begin(), p.end(), 0);
-		}
+	}
 	inline int get(int x) {
 		return p[x] == x ? x : (p[x] = get(p[x]));
 	}
