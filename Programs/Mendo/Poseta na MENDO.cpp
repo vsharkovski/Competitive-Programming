@@ -1,8 +1,5 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
-typedef pair<int, int> pii;
-
 
 int main() {
     ios::sync_with_stdio(false);
@@ -10,7 +7,7 @@ int main() {
     int k, n;
     cin >> k >> n;
     long long has[2][101] = {};
-    for (int j = 0; j < 2; ++j){
+    for (int j = 0; j < 2; ++j) {
         for (int i = 0; i < n; ++i) {
             int x;
             cin >> x;
