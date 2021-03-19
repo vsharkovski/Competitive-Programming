@@ -9,7 +9,7 @@ int main() {
         for (int i = 0; i < n; ++i) {
             int x;
             cin >> x;
-            ++has[j][x];
+            has[j][x] += 1;
         }
     }
     long long ans = 0;
