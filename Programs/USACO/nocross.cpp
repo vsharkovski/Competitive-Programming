@@ -75,3 +75,50 @@ int main() {
 	}
 	cout << tree.query(0, n-1) << '\n';
 }
+
+/*
+// // // // O(n^2) solution:
+
+#include <bits/stdc++.h>
+using namespace std;
+
+inline void self_max(int &a, const int b) {
+	if (b > a) {
+		a = b;
+	}
+}
+
+int main() {
+	cin.tie(0)->sync_with_stdio(false);
+	#ifndef _DEBUG
+	freopen("nocross.in", "r", stdin);
+	freopen("nocross.out", "w", stdout);
+	#endif
+	int n;
+	cin >> n;
+	vector<int> a(n);
+	vector<int> b(n);
+	vector<vector<int>> dp(n+1, vector<int>(n+1, 0));
+	for (int i = 0; i < n; ++i) {
+		cin >> a[i];
+	}
+	for (int i = 0; i < n; ++i) {
+		cin >> b[i];
+	}
+	for (int i = n-1; i >= 0; --i) {
+		for (int j = n-1; j >= 0; --j) {
+			dp[i][j] = 0;
+			if (i+1 < n) {
+				self_max(dp[i][j], dp[i+1][j]);
+			}
+			if (j+1 < n) {
+				self_max(dp[i][j], dp[i][j+1]);
+			}
+			if (abs(a[i] - b[j]) <= 4) {
+				self_max(dp[i][j], 1 + dp[i+1][j+1]);
+			}
+		}
+	}
+	cout << dp[0][0] << '\n';
+}
+*/
