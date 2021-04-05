@@ -62,6 +62,9 @@ int main() {
 		pos[b] = i;
 	}
 	segtree tree(n+1);
+    // key factor: a and b are permutations
+    // so this solution is O(n * d * log n)
+    // dp[i] = max(1 + dp[j]); 0 <= j < i; abs(a[i]-b[j]) <= D
 	for (int i = 0; i < n; ++i) {
 		vector<int> pot;
 		for (int x = max(0, a[i]-D); x <= min(n-1, a[i]+D); ++x) {
