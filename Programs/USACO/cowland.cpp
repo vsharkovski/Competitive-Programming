@@ -1,10 +1,122 @@
+// Better solution
 
-// Problem : Problem 1. Cow Land
-// Contest : USACO 2019 February Contest, Gold
-// URL : http://usaco.org/index.php?page=viewproblem2&cpid=921
-// Memory Limit : 256 MB
-// Time Limit : 4000 ms
-// Powered by CP Editor (https://github.com/coder3101/cp-editor)
+#include <bits/stdc++.h>
+using namespace std;
+typedef pair<int, int> pii;
+
+const int N = 100010;
+const int K = 17;
+
+int n, q;
+vector<int> graph[N];
+int val[N];
+
+int timer;
+int tin[N];
+int tout[N];
+int depth[N];
+int parent[N][K];
+
+void dfs(int node, int par, int dep) {
+	tin[node] = timer++;
+	depth[node] = dep;
+	parent[node][0] = par;
+	for (int i = 1; i < K; ++i) {
+		if (parent[node][i-1] == -1) {
+			parent[node][i] = -1;
+		} else {
+			parent[node][i] = parent[ parent[node][i-1] ][i-1];
+		}
+	}
+	for (int to : graph[node]) {
+		if (to == par) continue;
+		dfs(to, node, dep+1);
+	}
+	tout[node] = timer++;
+}
+
+int find_lca(int a, int b) {
+	if (depth[a] < depth[b]) swap(a, b);
+	for (int i = K-1; i >= 0; --i) {
+		if (depth[a] - (1<<i) >= depth[b]) {
+			a = parent[a][i];
+		}
+	}
+	if (a == b) return a;
+	for (int i = K-1; i >= 0; --i) {
+		if (parent[a][i] != -1 && parent[a][i] != parent[b][i]) {
+			a = parent[a][i];
+			b = parent[b][i];
+		}
+	}
+	return parent[a][0];
+}
+
+int bitree[2*N];
+
+void update(int pos, int val) {
+	while (pos < timer) {
+		bitree[pos] ^= val;
+		pos += pos & -pos;
+	}
+}
+
+int query(int pos) {
+	int res = 0;
+	while (pos >= 1) {
+		res ^= bitree[pos];
+		pos -= pos & -pos;
+	}
+	return res;
+}
+
+int main() {
+	cin.tie(0)->sync_with_stdio(0);
+	#ifndef _DEBUG
+	freopen("cowland.in", "r", stdin);
+	freopen("cowland.out", "w", stdout);
+	#endif // _DEBUG
+	cin >> n >> q;
+	for (int i = 1; i <= n; ++i) {
+		cin >> val[i];
+	}
+	for (int i = 0; i < n-1; ++i) {
+		int a, b;
+		cin >> a >> b;
+		graph[a].push_back(b);
+		graph[b].push_back(a);
+	}
+	timer = 1;
+	dfs(1, -1, 0);
+	for (int i = 1; i < timer; ++i) {
+		bitree[i] = 0;
+	}
+	for (int i = 1; i <= n; ++i) {
+		update(tin[i], val[i]);
+		update(tout[i], val[i]);
+	}
+	for (int i = 0; i < q; ++i) {
+		int type;
+		cin >> type;
+		if (type == 1) {
+			int i, v;
+			cin >> i >> v;
+			update(tin[i], val[i] ^ v); // remove old, add new
+			update(tout[i], val[i] ^ v);
+			val[i] = v;
+		} else {
+			int i, j;
+			cin >> i >> j;
+			int lca = find_lca(i, j);
+			int res = query(tin[i]) ^ query(tin[j]) ^ val[lca];
+			cout << res << '\n';
+		}
+	}
+}
+
+/*
+// Worse solution, slow
+// February 2019
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -202,3 +314,4 @@ int main() {
 		}
 	}
 }
+*/
