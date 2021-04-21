@@ -1,3 +1,5 @@
+// Tarjan's algorithm for finding SCCs
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -28,6 +30,7 @@ void dfs(int u, int p) {
 		while (true) {
 			int v = stk.back();
 			stk.pop_back();
+            instack[v] = false;
 			cout << v << ' ';
 			if (v == u) break;
 		}
