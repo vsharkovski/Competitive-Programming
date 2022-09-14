@@ -1,3 +1,5 @@
+// https://leetcode.com/contest/weekly-contest-206/problems/check-if-string-is-transformable-with-substring-sort-operations/
+
 class Solution {
 public:
     const static int A = 10;
